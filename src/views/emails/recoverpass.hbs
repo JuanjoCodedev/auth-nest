@@ -1,0 +1,51 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Restablecer contraseña</title>
+    <style>
+      * { font-family: "Arial", sans-serif; } .container { width: 85%; background-color: #ffffff; padding: 30px; border: 1px solid #dcdcdc; border-radius: 10px; box-shadow: 0 4px
+      15px rgba(0, 0, 0, 0.1); margin: 50px auto; text-align: left; } .image { text-align: center; } img { width: 10rem; } h1 { color: #333; font-size: 26px; margin-bottom: 15px; }
+      hr { border: 0; height: 1px; background-color: #e0e0e0; margin: 30px 0; } p { margin: 15px 0; color: #555; font-size: 16px; } a { color: #1a73e8; text-decoration: none;
+      foFnt-weight: bold; } a:hover { text-decoration: underline; } .highlight { background-color: #fff8e1; padding: 15px; border-left: 5px solid #ffca28; border-radius: 5px;
+      margin: 25px 0; } .footer { margin-top: 40px; text-align: center; color: #999; font-size: 12px; } .footer p { margin: 5px 0; } .footer a { color: #1a73e8; text-decoration:
+      none; } .footer a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='image'>
+        <img
+          src='https://static.vecteezy.com/system/resources/previews/016/089/976/non_2x/safety-warning-black-glyph-icon-cybersecurity-breach-risk-of-computer-virus-security-issue-data-leakage-risk-silhouette-symbol-on-white-space-solid-pictogram-isolated-illustration-vector.jpg'
+          alt='img_recover_pass'
+        />
+      </div>
+
+      <h1>¿Necesitas establecer una nueva contraseña de acceso?</h1>
+
+      <hr />
+
+      <p style='text-transform: capitalize'>Hola <strong>{{name}}</strong>,</p>
+      <p>Hemos recibido una solicitud que has olvidado la clave de tu cuenta.</p>
+
+      <p class='highlight'>
+        Usted puede utilizar esta contraseña de manera provicional:
+        <strong> {{newPassword}}</strong>
+      </p>
+      <p>Si no solicitaste este cambio de clave es posible que otra persona esté intentando acceder a tu cuenta, si es asi por favor dirigete al siguiente link y
+        <a href='{{checkLink}}'>establece una nueva contraseña.</a></p>
+      <br />
+      <p>Atentamente,</p>
+      <p>El equipo de Soporte</p>
+      <br />
+      <div class='footer'>
+        <p>© 2024 Tu Empresa. Todos los derechos reservados.</p>
+        <p>
+          <a href='#'>Política de privacidad</a>
+          |
+          <a href='#'>Términos de servicio</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
