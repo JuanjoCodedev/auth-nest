@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: root
+    networks:
+      - pg_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pg@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    networks:
+      - pg_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth_api
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://root:root@db:5432/root
+    networks:
+      - pg_network
+    command: npm run start:dev
+
+networks:
+  pg_network:
