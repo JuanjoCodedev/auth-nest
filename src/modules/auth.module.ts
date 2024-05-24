@@ -1,9 +1,7 @@
+import { AuthService, UserEntity, UserService } from '@/core';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from 'src/core/models/user.entity';
-import { AuthService } from 'src/core/services/auth.service';
-import { UserService } from 'src/core/services/user.service';
 
 @Module({
   imports: [

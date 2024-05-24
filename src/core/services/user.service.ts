@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '../models/user.entity';
 import { Repository } from 'typeorm';
-import { ValidateDto } from 'src/shared/dtos/validate.dto';
+import { ValidateDto } from '@/shared';
+import { UserEntity } from '../models';
 
 @Injectable()
 export class UserService {
