@@ -20,7 +20,9 @@ export class AuthService {
 
     if (!isPasswordValid) throw new UnauthorizedException('Contraseña incorrecta.');
 
-    const { userpassword: _, ...result } = isEmailValid;
+    const { ...result } = isEmailValid;
+
+    delete result.userpassword;
 
     return result;
   }
