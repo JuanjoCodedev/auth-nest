@@ -25,12 +25,36 @@ export class AuthService {
     return result;
   }
 
-  async login(login: ValidateDto) {
+  async signIn(login: ValidateDto) {
     const user = await this.validateUser(login.useremail, login.userpassword);
 
-    const payload = { uid: user.uid, email: user.useremail, roles: user.roles };
-    const token = await this.jwtService.signAsync(payload, { expiresIn: '1h' });
+    const payload = { uid: user.uid, email: user.useremail, roles: user.roles, purpose: 'sign in' };
+    const token = await this.jwtService.signAsync(payload, { expiresIn: '1m' });
 
-    return { uid: user.uid, name: user.username, email: user.useremail, roles: user.roles, token };
+    const refreshPayload = { uid: user.uid, email: user.useremail, roles: user.roles, purpose: 'refresh' };
+    const refreshToken = this.jwtService.sign(refreshPayload, { expiresIn: '1d' });
+
+    return { uid: user.uid, name: user.username, email: user.useremail, roles: user.roles, token, refreshToken };
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(refreshToken);
+
+      if (payload.purpose !== 'refresh') {
+        throw new UnauthorizedException('El refresh token proporcionado no es válido');
+      }
+
+      const user = await this.userService.findByEmail(payload.email);
+
+      const newPayload = { uid: user.uid, email: user.useremail, roles: user.roles, purpose: 'newToken', refresh: true };
+      const newToken = this.jwtService.sign(newPayload, { expiresIn: '1m' });
+
+      return {
+        token: newToken,
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Refresh token inválido');
+    }
   }
 }

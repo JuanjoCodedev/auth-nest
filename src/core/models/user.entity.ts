@@ -1,5 +1,6 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { InternalServerErrorException } from '@nestjs/common';
 
 @Entity('user')
 export class UserEntity {
@@ -16,7 +17,7 @@ export class UserEntity {
   username: string;
 
   @Column()
-  roles: number = 3;
+  roles: number = 2;
 
   @BeforeInsert()
   async hashPassword(): Promise<void> {
@@ -24,9 +25,7 @@ export class UserEntity {
       const saltOrRounds = 10;
       this.userpassword = await bcrypt.hash(this.userpassword, saltOrRounds);
     } catch (error) {
-      // Manejar el error (por ejemplo, registrándolo o lanzándolo)
-      console.error('Error al cifrar la contraseña:', error);
-      throw error; // Volver a lanzar el error para indicar un problema
+      throw new InternalServerErrorException('Error al cifrar la contraseña', error);
     }
   }
 }

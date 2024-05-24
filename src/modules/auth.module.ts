@@ -10,8 +10,8 @@ import { UserService } from 'src/core/services/user.service';
     TypeOrmModule.forFeature([UserEntity]),
     JwtModule.register({
       global: true,
-      secret: `${process.env.TOKEN_KEY}`,
-      signOptions: { expiresIn: '1h' },
+      secret: 'JWT_SECRET',
+      signOptions: { expiresIn: '1m' },
     }),
   ],
 
