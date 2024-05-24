@@ -85,9 +85,43 @@ npm install
   }
   ```
 
+  #### Refrescar Token
+
+- **URL**: `user/refreshtoken`
+- **Método**: `POST`
+- **Cuerpo**:
+
+  ```json
+  {
+    "refreshToken": "antiguo_token"
+  }
+  ```
+
+  #### Nota importante
+
+  - Para refrescar el token desde el frontend, asegúrate de incluir el encabezado x-refresh-token con el valor del token de actualización (refresh token) en tu solicitud HTTP.
+
+```json
+{
+  "x-refresh-token": "refreshToken"
+}
+```
+
 ### Roles
 
 Los roles pueden ser asignados a los usuarios y utilizados para proteger rutas específicas. Ejemplo de roles: `admin`, `member`.
+
+```typescript
+@Auth(RoleEnum.MEMBER, RoleEnum.ADMIN)
+@Get('saludo')
+getSaludo() {
+  return 'Hola mundo';
+}
+```
+
+### Control de Roles
+
+El control de roles se realiza en el archivo `src/shared/interfaces/user.interface.ts`. Este archivo define la interfaz de usuario y especifica los roles disponibles para asignar a los usuarios en la aplicación. Puedes modificar esta interfaz para agregar, eliminar o modificar roles según las necesidades de tu aplicación.
 
 ## Desarrollo
 
@@ -106,7 +140,7 @@ npm run start:prod
 
 ## Diagrama de Flujo
 
-<img src="https://i.imgur.com/xMHjla4.jpg">
+<img src="https://imgur.com/CoElyl2.jpg">
 
 ## Contribución
 
@@ -131,6 +165,12 @@ git push origin feature/nueva-caracteristica
 ```
 
 5. Abre un Pull Request en GitHub, describiendo los cambios propuestos.
+
+## Nuevas caracteristicas
+
+### Version: 0.1.0
+
+- **Refrescar Token:** Los usuarios pueden refrescar su token de acceso cuando expire.
 
 ## Lincencia
 

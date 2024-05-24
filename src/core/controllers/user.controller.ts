@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { ValidateDto } from 'src/shared/dtos/validate.dto';
 import { AuthService } from '../services/auth.service';
@@ -17,6 +17,11 @@ export class UserController {
 
   @Post('login')
   async login(@Body() loginDto: ValidateDto) {
-    return await this.authService.login(loginDto);
+    return await this.authService.signIn(loginDto);
+  }
+
+  @Post('refreshToken')
+  async refreshToken(@Body('refreshToken') refreshToken: string) {
+    return this.authService.refreshToken(refreshToken);
   }
 }
