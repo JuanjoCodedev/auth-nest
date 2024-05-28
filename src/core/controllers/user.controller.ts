@@ -1,27 +1,16 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post } from '@nestjs/common';
 import { UserService } from '../services/user.service';
-import { ValidateDto } from 'src/shared/dtos/validate.dto';
-import { AuthService } from '../services/auth.service';
+import { Auth } from 'src/shared/decorators/auth.decorator';
+import { RoleEnum } from 'src/shared/interfaces/user.interface';
+import { PersonDto } from 'src/shared/dtos/person.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Post('create-account')
-  async createAccount(@Body() newAccountDto: ValidateDto) {
-    return await this.userService.createAccount(newAccountDto);
-  }
-
-  @Post('login')
-  async login(@Body() loginDto: ValidateDto) {
-    return await this.authService.signIn(loginDto);
-  }
-
-  @Post('refreshToken')
-  async refreshToken(@Body('refreshToken') refreshToken: string) {
-    return this.authService.refreshToken(refreshToken);
+  @Auth(RoleEnum.ADMIN, RoleEnum.MEMBER)
+  @Post('recoverPassword/:id')
+  async recoverPassword(@Param('id') id: number, @Body() updatePassword: PersonDto) {
+    return this.userService.recoverPassword(id, updatePassword);
   }
 }

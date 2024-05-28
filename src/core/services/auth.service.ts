@@ -1,38 +1,27 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from './user.service';
 import { compare } from 'bcrypt';
-import { ValidateDto } from 'src/shared/dtos/validate.dto';
+import { PersonDto } from 'src/shared/dtos/person.dto';
+import { NodemailerService } from './nodemailer.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from '../models/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
+    private readonly nodemailerService: NodemailerService,
   ) {}
 
-  async validateUser(useremail: string, userpassword: string): Promise<any> {
-    const isEmailValid = await this.userService.findByEmail(useremail);
-
-    if (!isEmailValid) throw new UnauthorizedException('Email no fue encontrado');
-
-    const isPasswordValid = await compare(userpassword, isEmailValid.userpassword);
-
-    if (!isPasswordValid) throw new UnauthorizedException('Contraseña incorrecta.');
-
-    const { userpassword: _, ...result } = isEmailValid;
-
-    return result;
-  }
-
-  async signIn(login: ValidateDto) {
-    const user = await this.validateUser(login.useremail, login.userpassword);
-
-    const payload = { uid: user.uid, email: user.useremail, roles: user.roles, purpose: 'sign in' };
-    const token = await this.jwtService.signAsync(payload, { expiresIn: '1m' });
+  private async generateTokens(user: UserEntity) {
+    const payload = { uid: user.uid, email: user.useremail, roles: user.roles, purpose: 'sign in / sign up' };
+    const token = await this.jwtService.signAsync(payload, { expiresIn: '5m' });
 
     const refreshPayload = { uid: user.uid, email: user.useremail, roles: user.roles, purpose: 'refresh' };
-    const refreshToken = this.jwtService.sign(refreshPayload, { expiresIn: '1d' });
+    const refreshToken = await this.jwtService.signAsync(refreshPayload, { expiresIn: '10m' });
 
     return { uid: user.uid, name: user.username, email: user.useremail, roles: user.roles, token, refreshToken };
   }
@@ -45,16 +34,83 @@ export class AuthService {
         throw new UnauthorizedException('El refresh token proporcionado no es válido');
       }
 
-      const user = await this.userService.findByEmail(payload.email);
+      const user = await this.userRepository.findOne({ where: { useremail: payload.email } });
+
+      if (!user) {
+        throw new UnauthorizedException('Usuario no encontrado.');
+      }
 
       const newPayload = { uid: user.uid, email: user.useremail, roles: user.roles, purpose: 'newToken', refresh: true };
-      const newToken = this.jwtService.sign(newPayload, { expiresIn: '1m' });
+      const newToken = await this.jwtService.signAsync(newPayload, { expiresIn: '5m' });
 
-      return {
-        token: newToken,
-      };
+      return { token: newToken };
     } catch (error) {
       throw new UnauthorizedException('Refresh token inválido');
+    }
+  }
+
+  async signUp(signUpDto: PersonDto) {
+    const existingUser = await this.userRepository.findOne({ where: { useremail: signUpDto.useremail } });
+
+    if (existingUser) {
+      throw new UnauthorizedException('Pruebe con un correo electrónico diferente.');
+    }
+
+    const newUser = this.userRepository.create(signUpDto);
+    const savedAccount = await this.userRepository.save(newUser);
+
+    return this.generateTokens(savedAccount);
+  }
+
+  async validateUser(useremail: string, userpassword: string): Promise<any> {
+    const user = await this.userRepository.findOne({ where: { useremail } });
+
+    if (!user) {
+      throw new UnauthorizedException('Email no fue encontrado');
+    }
+
+    const isPasswordValid = await compare(userpassword, user.userpassword);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Contraseña incorrecta.');
+    }
+
+    const { userpassword: _, ...result } = user;
+
+    return result;
+  }
+
+  async signIn(signInDto: PersonDto) {
+    const user = await this.validateUser(signInDto.useremail, signInDto.userpassword);
+    return this.generateTokens(user);
+  }
+
+  async sendPasswordResetEmail(reset: PersonDto) {
+    try {
+      const user = await this.userRepository.findOne({ where: { useremail: reset.useremail } });
+
+      if (!user) {
+        throw new UnauthorizedException('Este email es invalido, por favor vuelva a intentarlo.');
+      }
+
+      const payload = { uid: user.uid, roles: user.roles, purpose: 'Reset Password' };
+      const tokenReset = await this.jwtService.signAsync(payload, { expiresIn: '10m', secret: 'JWT_SECRET' });
+
+      const checkLink = `http://localhost:4200/auth/recover/password/?uid=${user.uid}&token=${tokenReset}`;
+
+      const emailContent = `
+        <p>Hola ${user.username}, este link va a estar activo por solo 10 minutos.</p>
+        ${checkLink}
+      `;
+
+      const to = user.useremail;
+      const subject = 'Actualizar contraseña';
+      const html = emailContent;
+
+      await this.nodemailerService.sendMail({ email: to, subject, html });
+      return { message: `Se ha enviado el correo electronico a: ${user.useremail}` };
+    } catch (error) {
+      throw new InternalServerErrorException('No pudo procesar la solicitud de restablecimiento de contraseña.');
     }
   }
 }

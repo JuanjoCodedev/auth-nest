@@ -1,8 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../models/user.entity';
 import { Repository } from 'typeorm';
-import { ValidateDto } from 'src/shared/dtos/validate.dto';
+import { PersonDto } from 'src/shared/dtos/person.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -11,20 +12,19 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findByEmail(useremail: string): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne({ where: { useremail } });
-  }
+  async recoverPassword(uid: number, updatePassword: PersonDto) {
+    const user = await this.userRepository.findOne({ where: { uid } });
 
-  async createAccount(newAccount: ValidateDto) {
-    const { useremail } = newAccount;
+    if (!user) {
+      throw new NotFoundException('Usuario no existe en la base de datos.');
+    }
 
-    const validateEmail = await this.userRepository.findOne({
-      where: { useremail },
-    });
+    const hashedPassword = await bcrypt.hash(updatePassword.userpassword, 10);
 
-    if (validateEmail) throw new UnauthorizedException('Pruebe con un correo electronico diferente.');
+    await this.userRepository.update({ uid }, { userpassword: hashedPassword });
 
-    const createAccount = this.userRepository.create(newAccount);
-    return this.userRepository.save(createAccount);
+    const updatedUser = await this.userRepository.findOne({ where: { uid } });
+
+    return { message: 'Contraseña actualizada', user: updatedUser };
   }
 }

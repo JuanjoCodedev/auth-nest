@@ -16,6 +16,7 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 - **Base de datos**: PostgreSQL
 - **Autenticación**: JWT (JSON Web Tokens)
 - **Hashing de contraseñas**: bcrypt
+- **Envios de correos electrónicos**: Nodemailer
 
 ## Requisitos Previos
 
@@ -40,11 +41,16 @@ npm install
 3. Configura la base de datos PostgreSQL y crea un archivo `.dev.env` en la raíz del proyecto con la siguiente configuración:
 
 ```env
-- HOSTDB=localhost
-- PORTDB=5432
-- USERNAMEDB=tu-usuario
-- PASSDB=tu-contraseña
-- DB=nombre-de-tu-base-de-datos
+PORT=3000
+HOSTDB=localhost
+PORTDB=5432
+USERNAMEDB=tu-usuario
+PASSDB=tu-contraseña
+DB=nombre-de-tu-base-de-datos
+
+NODEMAILER_NAME=tu-marca
+NODEMAILER_USER=email-remitente@example.com
+NODEMAILER_PASS=tu-contraseña-app-google
 ```
 
 ## Uso
@@ -61,7 +67,7 @@ npm install
 
 #### Registro de Usuario
 
-- **URL**: `user/create-account`
+- **URL**: `auth/signUp`
 - **Método**: `POST`
 - **Cuerpo**:
   ```json
@@ -74,7 +80,7 @@ npm install
 
 #### Inicio de Sesión
 
-- **URL**: `/user/login`
+- **URL**: `auth/signIn`
 - **Método**: `POST`
 - **Cuerpo**:
 
@@ -87,7 +93,7 @@ npm install
 
   #### Refrescar Token
 
-- **URL**: `user/refreshtoken`
+- **URL**: `auth/refreshtoken`
 - **Método**: `POST`
 - **Cuerpo**:
 
@@ -99,7 +105,7 @@ npm install
 
   #### Nota importante
 
-  - Para refrescar el token desde el frontend, asegúrate de incluir el encabezado x-refresh-token con el valor del token de actualización (refresh token) en tu solicitud HTTP.
+Para refrescar el token desde el frontend, asegúrate de incluir el encabezado x-refresh-token con el valor del token de actualización (refresh token) en tu solicitud HTTP.
 
 ```json
 {
@@ -107,16 +113,40 @@ npm install
 }
 ```
 
+#### Enviar token por correo electrónico
+
+- **URL**: `auth/sendPasswordReset`
+- **Método**: `POST`
+- **Cuerpo**:
+
+  ```json
+  {
+    "useremail": "correo@ejemplo.com"
+  }
+  ```
+
+#### Actualizar contraseña
+
+- **URL**: `user/recoverPassword/:id`
+- **Método**: `POST`
+- **Cuerpo**:
+
+  ```json
+  {
+    "userpassword": "contraseña-nueva"
+  }
+  ```
+
 ### Roles
 
 Los roles pueden ser asignados a los usuarios y utilizados para proteger rutas específicas. Ejemplo de roles: `admin`, `member`.
 
 ```typescript
-@Auth(RoleEnum.MEMBER, RoleEnum.ADMIN)
-@Get('saludo')
-getSaludo() {
-  return 'Hola mundo';
-}
+@Auth(RoleEnum.ADMIN, RoleEnum.MEMBER)
+@Post('recoverPassword/:id')
+async recoverPassword(@Param('id') id: number, @Body() updatePassword: ValidateDto) {
+    return this.userService.recoverPassword(id, updatePassword);
+  }
 ```
 
 ### Control de Roles
@@ -168,9 +198,15 @@ git push origin feature/nueva-caracteristica
 
 ## Nuevas caracteristicas
 
-### Version: 0.1.0
+### Versión: 0.1.0
 
 - **Refrescar Token:** Los usuarios pueden refrescar su token de acceso cuando expire.
+
+### Versión: 0.2.0
+
+- **Actualización de contraseña** Los usuarios pueden restablecer su contraseña enviando un email de verificación a su correo electronico.
+
+- **Estructuración de archivos** Se han realizados cambios en la estructura del proyecto.
 
 ## Lincencia
 
