@@ -4,19 +4,22 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 
 ## Características
 
-- Registro de usuarios
-- Inicio de sesión de usuarios
-- Asignación de roles a usuarios
-- Protección de rutas basadas en roles
-- Generación de tokens JWT para autenticación
+- Registro de usuarios.
+- Inicio de sesión de usuarios.
+- Asignación de roles a usuarios.
+- Protección de rutas basadas en roles.
+- Generación de tokens JWT para autenticación.
+- Generación de refresh token para una conexión fluida.
 
 ## Tecnologías Utilizadas
 
 - **Backend**: NestJS
 - **Base de datos**: PostgreSQL
-- **Autenticación**: JWT (JSON Web Tokens)
+- **Autenticación**: JWT (JSON Web Tokens), Passport
 - **Hashing de contraseñas**: bcrypt
 - **Envios de correos electrónicos**: Nodemailer
+- **CORS**: Para el manejo de solicitudes entre dominios
+- **Logger**: Pino para el registro de logs
 
 ## Requisitos Previos
 
@@ -51,6 +54,14 @@ DB=nombre-de-tu-base-de-datos
 NODEMAILER_NAME=tu-marca
 NODEMAILER_USER=email-remitente@example.com
 NODEMAILER_PASS=tu-contraseña-app-google
+
+GOOGLE_CLIENT_ID=tu-client-id-google
+GOOGLE_CLIENT_SECRET=tu-client-secret-google
+GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
+
+GITHUB_CLIENT_ID=tu-client-id-GITHUB
+GITHUB_CLIENT_SECRET=tu-client-secret-GITHUB
+GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback
 ```
 
 ## Uso
@@ -137,6 +148,26 @@ Para refrescar el token desde el frontend, asegúrate de incluir el encabezado x
   }
   ```
 
+#### Validación con Google
+
+- **URL**: `auth/google`
+- **Método**: `GET`
+- **Cuerpo**: No aplica
+
+- **URL**: `auth/google/callback`
+- **Método**: `GET`
+- **Cuerpo**: No aplica
+
+#### Validación con Github
+
+- **URL**: `auth/github`
+- **Método**: `GET`
+- **Cuerpo**: No aplica
+
+- **URL**: `auth/github/callback`
+- **Método**: `GET`
+- **Cuerpo**: No aplica
+
 ### Roles
 
 Los roles pueden ser asignados a los usuarios y utilizados para proteger rutas específicas. Ejemplo de roles: `admin`, `member`.
@@ -205,6 +236,12 @@ git push origin feature/nueva-caracteristica
 ### Versión: 0.2.0
 
 - **Actualización de contraseña** Los usuarios pueden restablecer su contraseña enviando un email de verificación a su correo electronico.
+
+- **Estructuración de archivos** Se han realizados cambios en la estructura del proyecto.
+
+### Versión: 0.3.0
+
+- **Autenticación segura con múltiples proveedores:** Permite a los usuarios iniciar sesión o registrarse utilizando sus cuentas de Google o Github.
 
 - **Estructuración de archivos** Se han realizados cambios en la estructura del proyecto.
 

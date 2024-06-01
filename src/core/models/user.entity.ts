@@ -19,6 +19,12 @@ export class UserEntity {
   @Column()
   roles: number = 2;
 
+  @Column()
+  provider: string;
+
+  token?: string;
+  refreshToken?: string;
+
   @BeforeInsert()
   async hashPassword(): Promise<void> {
     try {
