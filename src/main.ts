@@ -11,7 +11,14 @@ async function bootstrap() {
 
   app.useLogger(app.get(Logger));
 
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true, validationError: { target: false, value: false } }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      validationError: { target: false, value: false },
+    }),
+  );
 
   app.enableCors({
     origin: 'http://localhost:4200',
@@ -22,6 +29,12 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization',
   });
 
-  await app.listen(process.env.PORT);
+  try {
+    await app.listen(process.env.PORT);
+    console.log(`API is listening on the port: ${process.env.PORT}`);
+  } catch (err) {
+    console.error('Error starting API:', err);
+  }
 }
+
 bootstrap();

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Logger, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { PersonDto, SignInDto, VerifyEmailDto } from 'src/shared/dtos/person.dto';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Throttle } from '@nestjs/throttler';
 

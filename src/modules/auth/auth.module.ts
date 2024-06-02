@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { UserService } from '../user/user.service';
+import { UserModule } from '../user/user.module';
+import { UserEntity } from '../user/user.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthController } from 'src/core/controllers/auth.controller';
-import { UserEntity } from 'src/core/models/user.entity';
-import { AuthService } from 'src/core/services/auth.service';
-import { NodemailerService } from 'src/core/services/nodemailer.service';
-import { GithubStrategy } from 'src/strategy/github.strategy';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { GoogleStrategy } from 'src/strategy/google.strategy';
+import { GithubStrategy } from 'src/strategy/github.strategy';
 
 @Module({
   imports: [

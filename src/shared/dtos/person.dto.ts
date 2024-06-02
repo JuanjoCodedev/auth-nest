@@ -1,4 +1,4 @@
-import { IsAlphanumeric, IsEmail, IsEmpty, IsNotEmpty, Length } from 'class-validator';
+import { IsAlphanumeric, IsEmail, IsEmpty, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class PersonDto {
   @IsNotEmpty({ message: 'Oops al parecer no has ingresado dato en este campo' })
@@ -14,6 +14,9 @@ export class PersonDto {
   @IsNotEmpty({ message: 'Oops al parecer no has ingresado dato en este campo' })
   @Length(5, 25, { message: 'El nombre debe tener entre 5 y 25 caracteres' })
   readonly username: string;
+
+  @IsString()
+  readonly photoUrl: string;
 
   @IsEmpty()
   readonly provider: string;

@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: pg_sql
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 852456
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  adminer:
+    image: adminer
+    restart: always
+    container_name: adminer
+    ports:
+      - 8080:8080
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth_api
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .dev.env
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:852456@db:5432/postgres
+    depends_on:
+      - db
+    command: npm run start:dev
+
+volumes:
+  postgres_data:
