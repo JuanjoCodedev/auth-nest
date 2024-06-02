@@ -20,6 +20,9 @@ export class UserEntity {
   roles: number = 2;
 
   @Column()
+  photoUrl: string;
+
+  @Column()
   provider: string;
 
   token?: string;

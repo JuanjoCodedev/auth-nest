@@ -2,9 +2,9 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { PersonDto, SignInDto, VerifyEmailDto } from 'src/shared/dtos/person.dto';
-import { NodemailerService } from './nodemailer.service';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '../models/user.entity';
+import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
@@ -106,13 +106,14 @@ export class AuthService {
     const tokenReset = await this.generateToken(payload, '10m', 'JWT_SECRET');
 
     const checkLink = `http://localhost:4200/auth/recover/password/?uid=${user.uid}&token=${tokenReset}`;
-    const emailContent = `<p>Hola ${user.username}, este link va a estar activo por solo 10 minutos.</p> ${checkLink}`;
 
-    await this.nodemailerService.sendMail({
-      email: user.useremail,
-      subject: 'Actualizar contraseña',
-      html: emailContent,
-    });
+    await this.nodemailerService.sendPasswordResetEmail(
+      {
+        email: user.useremail,
+        username: user.username,
+      },
+      checkLink,
+    );
 
     this.logger.debug({ context: 'AuthService', message: `Restablecimiento de contraseña enviado a ${user.useremail}` });
     return { message: `Se ha enviado el correo electronico a: ${user.useremail}`, tokenReset };
