@@ -2,9 +2,9 @@
   "name": "auth-nest",
   "version": "0.3.0",
   "description": "",
-  "author": "",
+  "author": "Juan Jose Salazar",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

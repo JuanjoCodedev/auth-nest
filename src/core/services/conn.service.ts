@@ -7,11 +7,11 @@ export class ConnService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'postgres',
-      host: process.env.HOSTDB,
-      port: parseInt(process.env.PORTDB),
-      username: process.env.USERNAMEDB,
-      password: process.env.PASSDB,
-      database: process.env.DB,
+      host: process.env.HOST_DATABASE,
+      port: parseInt(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.DATABASE,
       synchronize: false,
       entities: [UserEntity],
       logging: ['error', 'warn', 'info', 'query'],

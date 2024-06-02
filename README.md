@@ -10,22 +10,25 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 - Protección de rutas basadas en roles.
 - Generación de tokens JWT para autenticación.
 - Generación de refresh token para una conexión fluida.
+- Autenticación mediante proveedores (Google, Github).
 
 ## Tecnologías Utilizadas
 
-- **Backend**: NestJS
-- **Base de datos**: PostgreSQL
-- **Autenticación**: JWT (JSON Web Tokens), Passport
-- **Hashing de contraseñas**: bcrypt
-- **Envios de correos electrónicos**: Nodemailer
-- **CORS**: Para el manejo de solicitudes entre dominios
-- **Logger**: Pino para el registro de logs
+- **Backend**: NestJS.
+- **Base de datos**: PostgreSQL.
+- **Autenticación**: JWT (JSON Web Tokens), Passport.
+- **Hashing de contraseñas**: bcrypt.
+- **Envios de correos electrónicos**: Nodemailer.
+- **CORS**: Para el manejo de solicitudes entre dominios.
+- **Logger**: Pino para el registro de logs.
+- **Contenedores**: Docker para el despliegue y gestión de contenedores.
 
 ## Requisitos Previos
 
 - Node.js (v14 o superior)
 - PostgreSQL
 - npm o yarn
+- Docker (opcional, pero recomendado para el desarrollo y despliegue con contenedores)
 
 ## Instalación
 
@@ -35,21 +38,15 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 git clone https://github.com/JuanjoCodedev/auth-nest.git
 ```
 
-2. Instala las dependencias del proyecto:
-
-```bash
-npm install
-```
-
-3. Configura la base de datos PostgreSQL y crea un archivo `.dev.env` en la raíz del proyecto con la siguiente configuración:
+2. Configura la base de datos PostgreSQL y crea un archivo `.dev.env` en la raíz del proyecto con la siguiente configuración:
 
 ```env
 PORT=3000
-HOSTDB=localhost
-PORTDB=5432
-USERNAMEDB=tu-usuario
-PASSDB=tu-contraseña
-DB=nombre-de-tu-base-de-datos
+HOST_DATABASE=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=tu-usuario
+POSTGRES_PASSWORD=tu-contraseña
+DATABASE=nombre-de-tu-base-de-datos
 
 NODEMAILER_NAME=tu-marca
 NODEMAILER_USER=email-remitente@example.com
@@ -64,15 +61,55 @@ GITHUB_CLIENT_SECRET=tu-client-secret-GITHUB
 GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback
 ```
 
+### Observación
+
+Si vas a utiizar Docker en vez de implementar:
+
+```env
+HOST_DATABASE=localhost
+```
+
+se recomienda utilizar:
+
+```env
+HOST_DATABASE=db
+```
+
 ## Uso
 
-1. Inicia el servidor:
+1. Opción A: Ejecución con Docker
 
-   ```bash
-   npm run start
-   ```
+- Asegúrate de tener Docker instalado en tu sistema. Puedes descargarlo desde Docker Hub.
 
-2. El servidor estará disponible en `http://localhost:3000`
+- Crea un archivo .dev.env en la raíz del proyecto con la configuración de la base de datos y otras variables de entorno necesarias, si no lo haces no te podra ejecutar el comando correctamente (consulta los pasos de instalación #2 .dev.env sigue los pasos).
+
+- Ejecuta el siguiente comando en la raíz del proyecto para construir y ejecutar los contenedores de Docker:
+
+```bash
+docker-compose up --build
+```
+
+Esto creará e iniciará los contenedores necesarios para ejecutar la aplicación, incluyendo la base de datos PostgreSQL y la interfaz de administración Adminer, para crear la tabla solo dirigete a la **URL:** localhost:8080.
+
+2. Opción B: Ejecución sin Docker
+
+- Asegúrate de tener PostgreSQL instalado y configurado en tu sistema.
+
+- Crea un archivo .dev.env en la raíz del proyecto con la configuración de la base de datos y otras variables de entorno necesarias (consulta los pasos de instalación #2 .dev.env sigue los pasos).
+
+- Instala las dependencias del proyecto:
+
+```bash
+npm install
+```
+
+- Inicia el servidor con el siguiente comando:
+
+```bash
+npm run start
+```
+
+3. El servidor estará disponible en `http://localhost:3000`
 
 ### Endpoints
 
@@ -114,15 +151,15 @@ GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback
   }
   ```
 
-  #### Nota importante
+  #### Observación
 
-Para refrescar el token desde el frontend, asegúrate de incluir el encabezado x-refresh-token con el valor del token de actualización (refresh token) en tu solicitud HTTP.
+  Para refrescar el token desde el frontend, asegúrate de incluir el encabezado x-refresh-token con el valor del token de actualización (refresh token) en tu solicitud HTTP.
 
-```json
-{
-  "x-refresh-token": "refreshToken"
-}
-```
+  ```json
+  {
+    "x-refresh-token": "refreshToken"
+  }
+  ```
 
 #### Enviar token por correo electrónico
 
@@ -239,11 +276,13 @@ git push origin feature/nueva-caracteristica
 
 - **Estructuración de archivos** Se han realizados cambios en la estructura del proyecto.
 
-### Versión: 0.3.0
+### Versión: 0.3.0 - Experimental
 
 - **Autenticación segura con múltiples proveedores:** Permite a los usuarios iniciar sesión o registrarse utilizando sus cuentas de Google o Github.
 
 - **Estructuración de archivos** Se han realizados cambios en la estructura del proyecto.
+
+- **Docker:** Se ha implementado Docker para facilitar la creación de un entorno de desarrollo consistente y portátil. Sin embargo, esta característica está en fase experimental y puede requerir ajustes adicionales para un funcionamiento óptimo.
 
 ## Lincencia
 

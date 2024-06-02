@@ -17,6 +17,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback) {
     const { name, emails, photos, provider } = profile;
     const email = emails[0].value;
+    const photoUrl = photos[0].value;
     let user = await this.authService.findOneByEmail(email);
 
     if (!user) {
@@ -25,6 +26,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         useremail: email,
         username: `${name.givenName} ${name.familyName}`,
         userpassword: randomPassword,
+        photoUrl: photoUrl,
         provider: provider,
       });
     }

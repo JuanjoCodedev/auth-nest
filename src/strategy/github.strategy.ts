@@ -15,8 +15,9 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any, done: Function) {
-    const { id, username, emails, provider } = profile;
+    const { id, username, emails, photos, provider } = profile;
     const email = emails[0].value;
+    const avatar = photos[0].value;
 
     let user = await this.authService.findOneByEmail(email);
 
@@ -26,6 +27,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
         useremail: email,
         username: username,
         userpassword: randomPassword,
+        photoUrl: avatar,
         provider: provider,
       });
     }
