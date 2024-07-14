@@ -12,14 +12,14 @@ export class AuthController {
 
   @Post('signUp')
   async createAccount(@Body() signUpDto: PersonDto) {
-    this.logger.log(`Solicitud de nueva cuenta recibida para el usuario ${signUpDto.useremail}`);
+    this.logger.log(`Solicitud de nueva cuenta recibida para el usuario ${signUpDto.email}`);
     return await this.authService.signUp(signUpDto);
   }
 
   @Throttle({ default: { limit: 50, ttl: 60000 } })
   @Post('signIn')
   async signIn(@Body() signInDto: SignInDto) {
-    this.logger.log(`Solicitud de inicio de sesión recibida para el usuario ${signInDto.useremail}`);
+    this.logger.log(`Solicitud de inicio de sesión recibida para el usuario ${signInDto.email}`);
     return await this.authService.signIn(signInDto);
   }
 

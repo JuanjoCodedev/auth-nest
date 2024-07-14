@@ -25,14 +25,14 @@ export class AuthService {
   }
 
   async generateTokens(user: UserEntity) {
-    const payload = { sub: user.uid, email: user.useremail, roles: user.roles, purpose: 'sign in / sign up' };
+    const payload = { sub: user.uid, email: user.email, roles: user.roles, purpose: 'sign in / sign up' };
     const token = await this.generateToken(payload, '5m', 'JWT_SECRET');
 
-    const refreshPayload = { sub: user.uid, email: user.useremail, roles: user.roles, purpose: 'refresh' };
+    const refreshPayload = { sub: user.uid, email: user.email, roles: user.roles, purpose: 'refresh' };
     const refreshToken = await this.generateToken(refreshPayload, '10m', 'JWT_SECRET');
 
-    this.logger.debug({ context: 'AuthService', message: `Token generado para usuario ${user.useremail}` });
-    return { uid: user.uid, name: user.username, email: user.useremail, roles: user.roles, token, refreshToken };
+    this.logger.debug({ context: 'AuthService', message: `Token generado para usuario ${user.email}` });
+    return { uid: user.uid, name: user.name, email: user.email, roles: user.roles, token, refreshToken };
   }
 
   async refreshToken(refreshToken: string) {
@@ -40,13 +40,13 @@ export class AuthService {
       const payload = await this.jwtService.verifyAsync(refreshToken);
       if (payload.purpose !== 'refresh') throw new UnauthorizedException('El refresh token proporcionado no es válido');
 
-      const user = await this.userRepository.findOne({ where: { useremail: payload.email } });
+      const user = await this.userRepository.findOne({ where: { email: payload.email } });
       if (!user) throw new UnauthorizedException('Usuario no encontrado.');
 
-      const newPayload = { sub: user.uid, email: user.useremail, roles: user.roles, purpose: 'newToken' };
+      const newPayload = { sub: user.uid, email: user.email, roles: user.roles, purpose: 'newToken' };
       const newToken = await this.generateToken(newPayload, '5m', 'JWT_SECRET');
 
-      this.logger.debug({ context: 'AuthService', message: `Token actualizado para el usuario ${user.useremail}` });
+      this.logger.debug({ context: 'AuthService', message: `Token actualizado para el usuario ${user.email}` });
       return { token: newToken };
     } catch (error) {
       this.logger.error('Error al refrescar el token', error);
@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   async findOneByEmail(userEmail: string) {
-    return this.userRepository.findOne({ where: { useremail: userEmail } });
+    return this.userRepository.findOne({ where: { email: userEmail } });
   }
 
   async signUpWithProvider(userData: Partial<UserEntity>): Promise<UserEntity> {
@@ -70,13 +70,13 @@ export class AuthService {
   }
 
   async signUp(signUpDto: PersonDto) {
-    const existingUser = await this.findOneByEmail(signUpDto.useremail);
+    const existingUser = await this.findOneByEmail(signUpDto.email);
     if (existingUser) throw new UnauthorizedException('Pruebe con un correo electrónico diferente.');
 
     const newUser = this.userRepository.create(signUpDto);
     const savedAccount = await this.userRepository.save(newUser);
 
-    this.logger.debug({ context: 'AuthService', message: `Usuario ${newUser.useremail} registrado` });
+    this.logger.debug({ context: 'AuthService', message: `Usuario ${newUser.email} registrado` });
     return this.generateTokens(savedAccount);
   }
 
@@ -84,22 +84,22 @@ export class AuthService {
     const user = await this.findOneByEmail(useremail);
     if (!user) throw new UnauthorizedException('Email no fue encontrado');
 
-    const isPasswordValid = await compare(userpassword, user.userpassword);
+    const isPasswordValid = await compare(userpassword, user.password);
     if (!isPasswordValid) throw new UnauthorizedException('Contraseña incorrecta.');
 
-    const { userpassword: _, ...result } = user;
+    const { password: _, ...result } = user;
     this.logger.debug({ context: 'AuthService', message: `Usuario ${useremail} validado` });
     return result;
   }
 
   async signIn(signInDto: SignInDto) {
-    const user = await this.validateUser(signInDto.useremail, signInDto.userpassword);
-    this.logger.debug({ context: 'AuthService', message: `Usuario ${signInDto.useremail} ha iniciado sesión` });
+    const user = await this.validateUser(signInDto.email, signInDto.password);
+    this.logger.debug({ context: 'AuthService', message: `Usuario ${signInDto.email} ha iniciado sesión` });
     return this.generateTokens(user);
   }
 
   async sendPasswordResetEmail(reset: VerifyEmailDto) {
-    const user = await this.findOneByEmail(reset.useremail);
+    const user = await this.findOneByEmail(reset.email);
     if (!user) throw new UnauthorizedException('Este email es invalido, por favor vuelva a intentarlo.');
 
     const payload = { uid: user.uid, roles: user.roles, purpose: 'Reset Password' };
@@ -109,13 +109,13 @@ export class AuthService {
 
     await this.nodemailerService.sendPasswordResetEmail(
       {
-        email: user.useremail,
-        username: user.username,
+        email: user.email,
+        username: user.name,
       },
       checkLink,
     );
 
-    this.logger.debug({ context: 'AuthService', message: `Restablecimiento de contraseña enviado a ${user.useremail}` });
-    return { message: `Se ha enviado el correo electronico a: ${user.useremail}`, tokenReset };
+    this.logger.debug({ context: 'AuthService', message: `Restablecimiento de contraseña enviado a ${user.email}` });
+    return { message: `Se ha enviado el correo electronico a: ${user.email}`, tokenReset };
   }
 }

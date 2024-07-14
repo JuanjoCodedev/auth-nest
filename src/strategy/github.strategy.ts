@@ -24,9 +24,9 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
     if (!user) {
       const randomPassword = this.authService.generateRandomPassword();
       user = await this.authService.signUpWithProvider({
-        useremail: email,
-        username: username,
-        userpassword: randomPassword,
+        email: email,
+        name: username,
+        password: randomPassword,
         photoUrl: avatar,
         provider: provider,
       });

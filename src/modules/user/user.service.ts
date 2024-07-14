@@ -19,9 +19,9 @@ export class UserService {
       throw new NotFoundException('Usuario no existe en la base de datos.');
     }
 
-    const hashedPassword = await bcrypt.hash(updatePasswordDto.userpassword, 10);
+    const hashedPassword = await bcrypt.hash(updatePasswordDto.password, 10);
 
-    await this.userRepository.update({ uid }, { userpassword: hashedPassword });
+    await this.userRepository.update({ uid }, { password: hashedPassword });
 
     const updatedUser = await this.userRepository.findOne({ where: { uid } });
 

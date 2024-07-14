@@ -12,8 +12,8 @@ import { NodemailerService } from './nodemailer.service';
         port: 465,
         secure: true,
         auth: {
-          user: `-secret`,
-          pass: `-secret`,
+          user: `--secret`,
+          pass: `--secret`,
         },
         defaults: {
           from: '"No Reply" <correo-del-remitente>',

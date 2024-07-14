@@ -2,7 +2,7 @@ import { Body, Controller, Param, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Auth } from 'src/shared/decorators/auth.decorator';
 import { RoleEnum } from 'src/shared/interfaces/user.interface';
-import { PersonDto, UpdatePasswordDto } from 'src/shared/dtos/person.dto';
+import { UpdatePasswordDto } from 'src/shared/dtos/person.dto';
 
 @Controller('user')
 export class UserController {

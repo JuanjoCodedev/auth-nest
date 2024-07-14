@@ -23,9 +23,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     if (!user) {
       const randomPassword = this.authService.generateRandomPassword();
       user = await this.authService.signUpWithProvider({
-        useremail: email,
-        username: `${name.givenName} ${name.familyName}`,
-        userpassword: randomPassword,
+        email: email,
+        name: `${name.givenName} ${name.familyName}`,
+        password: randomPassword,
         photoUrl: photoUrl,
         provider: provider,
       });

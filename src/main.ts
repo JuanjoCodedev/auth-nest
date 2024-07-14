@@ -3,11 +3,18 @@ import { AppModule } from './app.module';
 import { Logger } from 'nestjs-pino';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { extname, join } from 'path';
+import * as hbs from 'nodemailer-express-handlebars';
 
 dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
+
+  app.setBaseViewsDir(join(__dirname, 'views'));
+  app.engine('hbs', hbs({ extname: 'hbs' }));
+  app.setViewEngine('hbs');
 
   app.useLogger(app.get(Logger));
 

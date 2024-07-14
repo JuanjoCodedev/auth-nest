@@ -8,13 +8,13 @@ export class UserEntity {
   uid: number;
 
   @Column({ unique: true })
-  useremail: string;
+  email: string;
 
   @Column()
-  userpassword: string;
+  password: string;
 
   @Column()
-  username: string;
+  name: string;
 
   @Column()
   roles: number = 2;
@@ -32,7 +32,7 @@ export class UserEntity {
   async hashPassword(): Promise<void> {
     try {
       const saltOrRounds = 10;
-      this.userpassword = await bcrypt.hash(this.userpassword, saltOrRounds);
+      this.password = await bcrypt.hash(this.password, saltOrRounds);
     } catch (error) {
       throw new InternalServerErrorException('Error al cifrar la contraseña', error);
     }
