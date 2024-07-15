@@ -110,7 +110,7 @@ export class AuthService {
     await this.nodemailerService.sendPasswordResetEmail(
       {
         email: user.email,
-        username: user.name,
+        name: user.name,
       },
       checkLink,
     );

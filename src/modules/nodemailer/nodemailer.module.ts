@@ -12,18 +12,18 @@ import { NodemailerService } from './nodemailer.service';
         port: 465,
         secure: true,
         auth: {
-          user: `--secret`,
+          user: `email-remitente@gmail.com`,
           pass: `--secret`,
         },
-        defaults: {
-          from: '"No Reply" <correo-del-remitente>',
-        },
-        template: {
-          dir: join(__dirname, '..', '..', 'views', 'emails'),
-          adapter: new HandlebarsAdapter(),
-          options: {
-            strict: true,
-          },
+      },
+      defaults: {
+        from: '"No Reply" <email-remitente@gmail.com>',
+      },
+      template: {
+        dir: join(__dirname, '..', '..', 'views', 'emails'),
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
         },
       },
     }),

@@ -5,17 +5,14 @@ import { Injectable } from '@nestjs/common';
 export class NodemailerService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendPasswordResetEmail(user: { email: string; username: string }, checkLink: string) {
-    console.log('Sending email to:', user.email);
-    console.log('Template context:', { username: user.username, checkLink: checkLink }); // Depuración
-
+  async sendPasswordResetEmail(user: { email: string; name: string }, checkLink: string) {
     try {
       const result = await this.mailerService.sendMail({
         to: user.email,
-        subject: 'Nueva contraseña',
+        subject: 'Restablecimiento de contraseña',
         template: 'recoverpass',
         context: {
-          username: user.username,
+          name: user.name,
           checkLink: checkLink,
         },
       });

@@ -1,14 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restablecer contraseña</title>
-</head>
-<body>
-  <p>Hola {{username}},</p>
-  <p>Haga clic en el siguiente enlace para restablecer su contraseña:</p>
-  <p><a href="{{checkLink}}">Restablecer contraseña</a></p>
-  <p>Este enlace estará activo por solo 10 minutos.</p>
-</body>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Restablecer contraseña</title>
+    <style>
+      body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; margin: 0.5rem; padding: 0.5rem; } .container { width: 100%; max-width: 600px;
+      background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin: 0 auto; text-align: left; } .image { text-align: center;
+      margin-bottom: 20px; } .button { padding: 1rem 1rem; background-color: dodgerblue; color: white; border-radius: 1rem; text-decoration: none; display: inline-block; }
+      .button:hover { background-color: rgb(63, 159, 255); } .highlight { color: #e74c3c; }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='image'>
+        <img src='https://cdn.templates.unlayer.com/assets/1676547950700-Asset%201.png' alt='img_recover_pass' style='width: 30%; max-width: 30%' />
+        <h1>¿Olviste la contraseña?</h1>
+      </div>
+      <p style='text-transform: capitalize'>Hola <strong>{{name}}</strong>,</p>
+      <p>
+        Hemos recibido una solicitud para restablecer la contraseña de acceso. haga click en el siguiente boton para restablecer una nueva clave de seguridad.
+      </p>
+      <br /><br />
+
+      <div style='text-align: center'>
+        <a class='button' href='{{checkLink}}'>Actualizar contraseña</a>
+      </div>
+
+      <br /><br />
+      <p class='highlight'>Este enlace estará activo por solo 10 minutos.</p>
+      <p>Si no ha solicitado un restablecimiento de contraseña, por favor ignore este correo.</p>
+      <br />
+      <p>Atentamente,</p>
+      <p>El equipo de Soporte</p>
+    </div>
+  </body>
 </html>

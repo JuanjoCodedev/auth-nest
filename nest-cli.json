@@ -4,6 +4,7 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": ["views/emails/**/*"]
+    "assets": ["views/emails/**/*"],
+    "include": ["src/**/*.ts", "views/**/*"]
   }
 }

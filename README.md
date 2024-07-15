@@ -11,6 +11,7 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 - Generación de tokens JWT para autenticación.
 - Generación de refresh token para una conexión fluida.
 - Autenticación mediante proveedores (Google, Github).
+- Plantillas de correo electrónico con Handlebars.
 
 ## Tecnologías Utilizadas
 
@@ -21,6 +22,7 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 - **Envios de correos electrónicos**: Nodemailer.
 - **CORS**: Para el manejo de solicitudes entre dominios.
 - **Logger**: Pino para el registro de logs.
+- **Plantillas de correo electrónico**: Handlebars.
 - **Contenedores**: Docker para el despliegue y gestión de contenedores.
 
 ## Requisitos Previos
@@ -106,7 +108,7 @@ npm install
 - Inicia el servidor con el siguiente comando:
 
 ```bash
-npm run start
+npm run build-and-start
 ```
 
 3. El servidor estará disponible en `http://localhost:3000`
@@ -226,7 +228,7 @@ El control de roles se realiza en el archivo `src/shared/interfaces/user.interfa
 ### Ejecución de la Aplicación en Desarrollo
 
 ```bash
-npm run start:dev
+npm run build-and-start
 ```
 
 ### Compilación y Ejecución en Producción

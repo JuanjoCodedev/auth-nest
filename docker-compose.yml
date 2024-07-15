@@ -8,13 +8,13 @@ services:
     shm_size: 128mb
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: <contraseña-pg>
+      POSTGRES_PASSWORD: <tu-contraseña-pg>
       POSTGRES_DB: postgres
     ports:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  
+
   adminer:
     image: adminer
     restart: always
@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile
     container_name: auth_api
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - .:/app
       - /app/node_modules
@@ -36,7 +36,7 @@ services:
       - .dev.env
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:<contraseña-pg>@db:5432/postgres
+      - DATABASE_URL=postgresql://postgres:<tu-contraseña-pg>@db:5432/postgres
     depends_on:
       - db
     command: npm run start:dev
