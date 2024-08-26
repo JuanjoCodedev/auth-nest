@@ -5,6 +5,7 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "assets": ["views/emails/**/*"],
-    "include": ["src/**/*.ts", "views/**/*"]
+    "include": ["src/**/*.ts", "views/**/*"],
+    "plugins": ["@nestjs/swagger"]
   }
 }

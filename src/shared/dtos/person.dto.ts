@@ -20,6 +20,9 @@ export class PersonDto {
 
   @IsEmpty()
   readonly provider: string;
+
+  @IsEmpty()
+  readonly ipAddress: string;
 }
 
 export class SignInDto {

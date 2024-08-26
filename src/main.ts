@@ -4,6 +4,8 @@ import { Logger } from 'nestjs-pino';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 dotenv.config();
 
@@ -30,9 +32,22 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization',
   });
 
+  const config = new DocumentBuilder()
+    .setTitle('Authentication')
+    .setDescription('Authentication of user with multilple roles')
+    .setVersion('0.3.0')
+    .addTag('Auth')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  const configService = app.get(ConfigService);
+
   try {
-    await app.listen(process.env.PORT);
-    console.log(`API is listening on the port: ${process.env.PORT}`);
+    await app.listen(configService.get('PORT'));
+    console.log(`API is listening on the port: ${configService.get('PORT')}`);
   } catch (err) {
     console.error('Error starting API:', err);
   }

@@ -25,6 +25,9 @@ export class UserEntity {
   @Column()
   provider: string;
 
+  @Column()
+  ipAddress: string;
+
   token?: string;
   refreshToken?: string;
 

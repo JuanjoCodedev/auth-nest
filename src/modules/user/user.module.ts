@@ -3,13 +3,14 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UserEntity } from './user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NodemailerService } from '../nodemailer/nodemailer.service';
+import { EMailerService } from '../mailer/mailer.service';
 import { AuthService } from '../auth/auth.service';
-import { NodemailerModule } from '../nodemailer/nodemailer.module';
+import { EMailerModule } from '../mailer/mailer.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity]), NodemailerModule],
+  imports: [TypeOrmModule.forFeature([UserEntity]), EMailerModule, AuthModule],
   controllers: [UserController],
-  providers: [UserService, AuthService, NodemailerService],
+  providers: [UserService, AuthService, EMailerService],
 })
 export class UserModule {}

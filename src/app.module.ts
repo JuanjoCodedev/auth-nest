@@ -10,6 +10,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { DatabaseService } from './modules/databases/databases.service';
 import { DatabaseModule } from './modules/databases/databases.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { WebsocketsModule } from './modules/websockets/websockets.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     AuthModule,
     MailerModule,
     LoggerModule,
+    WebsocketsModule,
   ],
   providers: [DatabaseService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

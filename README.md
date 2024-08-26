@@ -4,14 +4,15 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 
 ## Características
 
-- Registro de usuarios.
-- Inicio de sesión de usuarios.
-- Asignación de roles a usuarios.
-- Protección de rutas basadas en roles.
-- Generación de tokens JWT para autenticación.
-- Generación de refresh token para una conexión fluida.
-- Autenticación mediante proveedores (Google, Github).
-- Plantillas de correo electrónico con Handlebars.
+- Permite a los usuarios crear una cuenta en el sistema.
+- Los usuarios pueden iniciar sesión en la aplicación utilizando sus credenciales con notificación por correo electrónico para accesos desde dispositivos diferentes a los habituales.
+- Actualización de contraseña con generación automática y opción de actualización manual a través de un enlace en el correo electrónico.
+- Permite asignar roles específicos a los usuarios para gestionar sus permisos y acceso dentro de la aplicación.
+- Las rutas de la aplicación están protegidas según el rol del usuario, asegurando que solo los usuarios con permisos adecuados puedan acceder a ciertas áreas.
+- Utiliza JSON Web Tokens (JWT) para la autenticación segura de usuarios.
+- Implementa refresh tokens para mantener la sesión activa y permitir una conexión fluida sin necesidad de reautenticación constante.
+- Permite a los usuarios iniciar sesión o registrarse utilizando sus cuentas de Google o Github para una experiencia de autenticación más conveniente.
+- Utiliza Handlebars para generar plantillas de correo electrónico dinámicas, facilitando el envío de correos personalizados y bien formateados.
 
 ## Tecnologías Utilizadas
 
@@ -19,11 +20,12 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 - **Base de datos**: PostgreSQL.
 - **Autenticación**: JWT (JSON Web Tokens), Passport.
 - **Hashing de contraseñas**: bcrypt.
-- **Envios de correos electrónicos**: Nodemailer.
+- **Envios de correos electrónicos**: Mailer.
 - **CORS**: Para el manejo de solicitudes entre dominios.
 - **Logger**: Pino para el registro de logs.
 - **Plantillas de correo electrónico**: Handlebars.
 - **Contenedores**: Docker para el despliegue y gestión de contenedores.
+- **Documentación de API**: Swagger para la generación de documentación de API.
 
 ## Requisitos Previos
 
@@ -50,9 +52,16 @@ POSTGRES_USER=tu-usuario
 POSTGRES_PASSWORD=tu-contraseña
 DATABASE=nombre-de-tu-base-de-datos
 
-NODEMAILER_NAME=tu-marca
-NODEMAILER_USER=email-remitente@example.com
-NODEMAILER_PASS=tu-contraseña-app-google
+SECRET_KEY=SECRET_KEY
+EXPIRED_TOKEN=tiempo-expiracion-del-token
+EXPIRED_REFRESH_TOKEN=tiempo-expiracion-del-refresh-token
+
+MAILER_HOST=smtp.gmail.com
+MAILER_PORT=465
+MAILER_SECURE=true
+MAILER_NAME=tu-marca
+MAILER_USER=email-remitente@example.com
+MAILER_PASS=tu-contraseña-app-google
 
 GOOGLE_CLIENT_ID=tu-client-id-google
 GOOGLE_CLIENT_SECRET=tu-client-secret-google
@@ -105,13 +114,19 @@ Esto creará e iniciará los contenedores necesarios para ejecutar la aplicació
 npm install
 ```
 
-- Inicia el servidor con el siguiente comando:
+- Inicia el servidor con el siguiente comando para probar el envio de correo electronicos en desarrollo:
 
 ```bash
 npm run build-and-start
 ```
 
-3. El servidor estará disponible en `http://localhost:3000`
+- Inicia el servidor con el siguiente comando para desarrollo:
+
+```bash
+npm run start:dev
+```
+
+3. El servidor estará disponible en `http://localhost:3000` tambien puedes ingesar `http://localhost:3000/api` para el uso de Swagger.
 
 ### Endpoints
 
@@ -214,7 +229,7 @@ Los roles pueden ser asignados a los usuarios y utilizados para proteger rutas e
 ```typescript
 @Auth(RoleEnum.ADMIN, RoleEnum.MEMBER)
 @Post('recoverPassword/:id')
-async recoverPassword(@Param('id') id: number, @Body() updatePassword: ValidateDto) {
+async recoverPassword(@Param('id') id: number, @Body() updatePassword: UpdatePasswordDto) {
     return this.userService.recoverPassword(id, updatePassword);
   }
 ```
@@ -268,9 +283,19 @@ git push origin feature/nueva-caracteristica
 
 ## Nuevas caracteristicas
 
-### Versión: 0.1.0
+### Versión: 0.4.0 - Experimental
 
-- **Refrescar Token:** Los usuarios pueden refrescar su token de acceso cuando expire.
+- **Swagger:** Se ha integrado Swagger para proporcionar una documentación interactiva de la API. puedes acceder a la documentacion en la ruta `localhost:3000/api`
+
+- **Asignación de contraseña:** Los usuarios ahora pueden solicitar una actualización de contraseña. Al hacerlo, se genera una nueva contraseña automáticamente y se envía al correo electrónico del usuario. Además, el correo electrónico incluye un enlace que permite a los usuarios actualizar la contraseña manualmente según su preferencia.
+
+- **Notificación de Ingreso desde Dispositivos Nuevos:** Si un usuario inicia sesión desde un dispositivo o dirección IP diferente a la habitual, se envía un correo electrónico de notificación para informarles sobre el acceso desde un nuevo dispositivo.
+
+### Versión: 0.3.0
+
+- **Autenticación segura con múltiples proveedores:** Permite a los usuarios iniciar sesión o registrarse utilizando sus cuentas de Google o Github.
+
+- **Docker:** Se ha implementado Docker para facilitar la creación de un entorno de desarrollo consistente y portátil. Sin embargo, esta característica está en fase experimental y puede requerir ajustes adicionales para un funcionamiento óptimo.
 
 ### Versión: 0.2.0
 
@@ -278,13 +303,9 @@ git push origin feature/nueva-caracteristica
 
 - **Estructuración de archivos** Se han realizados cambios en la estructura del proyecto.
 
-### Versión: 0.3.0 - Experimental
+### Versión: 0.1.0
 
-- **Autenticación segura con múltiples proveedores:** Permite a los usuarios iniciar sesión o registrarse utilizando sus cuentas de Google o Github.
-
-- **Estructuración de archivos** Se han realizados cambios en la estructura del proyecto.
-
-- **Docker:** Se ha implementado Docker para facilitar la creación de un entorno de desarrollo consistente y portátil. Sin embargo, esta característica está en fase experimental y puede requerir ajustes adicionales para un funcionamiento óptimo.
+- **Refrescar Token:** Los usuarios pueden refrescar su token de acceso cuando expire.
 
 ## Lincencia
 
