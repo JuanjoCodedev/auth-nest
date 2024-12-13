@@ -6,7 +6,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { HttpExceptionFilter } from './shared/filter/http-exception.filter';
 
 dotenv.config();
 
@@ -58,7 +57,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  app.useGlobalFilters(new HttpExceptionFilter());
+ 
 
   try {
     await app.listen(configService.get('PORT'));
