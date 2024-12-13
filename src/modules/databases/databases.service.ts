@@ -7,6 +7,10 @@ import { UserEntity } from '../user/user.entity';
 import { RolesEntity } from '../auth/roles/roles.entity';
 import { PermissionsEntity } from '../auth/permissions/permissions.entity';
 import { RolPermissionsEntity } from '../auth/rol_permissions/rol_permissions.entity';
+import { LogEntity } from '../log/log.entity';
+import { CityEntity } from '../location/city/city.entity';
+import { CountryEntity } from '../location/country/country.entity';
+import { DepartmentEntity } from '../location/department/department.entity';
 
 @Injectable()
 export class DatabaseService implements TypeOrmOptionsFactory {
@@ -27,7 +31,7 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       type: 'postgres',
       url: connectionUrl,
       synchronize: false,
-      entities: [UserEntity, RolesEntity, PermissionsEntity, RolPermissionsEntity],
+      entities: [UserEntity, RolesEntity, PermissionsEntity, RolPermissionsEntity, LogEntity, CityEntity, CountryEntity, DepartmentEntity],
       logging: ['error', 'warn', 'info', 'query'],
     };
   }
