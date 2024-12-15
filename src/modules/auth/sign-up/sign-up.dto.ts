@@ -1,4 +1,4 @@
-import { IsEmpty, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsEmpty, IsInt, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 import { SignInDto } from '../sign-in/sign-in.dto';
 
 export class SignUpDto extends SignInDto {
@@ -13,6 +13,18 @@ export class SignUpDto extends SignInDto {
   @IsOptional()
   @IsString()
   readonly photoUrl: string;
+
+  @IsNotEmpty({ message: 'Esta propiedad es obligatoria.' })
+  @IsInt({ message: 'Esta propiedad debe ser un número entero.' })
+  readonly id_country: number;
+
+  @IsNotEmpty({ message: 'Esta propiedad es obligatoria.' })
+  @IsInt({ message: 'Esta propiedad debe ser un número entero.' })
+  readonly id_department: number;
+
+  @IsNotEmpty({ message: 'Esta propiedad es obligatoria.' })
+  @IsInt({ message: 'Esta propiedad debe ser un número entero.' })
+  readonly id_city: number;
 
   @IsEmpty({ message: 'El proveedor de autenticación, es invalido.' })
   readonly provider: string;

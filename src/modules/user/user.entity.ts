@@ -6,6 +6,7 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { RolesEntity } from '../auth/roles/roles.entity';
 import { CityEntity } from '../location/city/city.entity';
 import { CountryEntity } from '../location/country/country.entity';
+import { DepartmentEntity } from '../location/department/department.entity';
 
 @Entity('person')
 export class UserEntity {
@@ -31,11 +32,18 @@ export class UserEntity {
   id_country: number;
 
   @Column()
+  id_department: number;
+
+  @Column()
   id_city: number;
 
   @OneToOne(() => CountryEntity, (userCountry) => userCountry.countryUser)
   @JoinColumn({ name: 'id_country' })
   userCountry: CountryEntity;
+
+  @OneToOne(() => DepartmentEntity, (userDepartment) => userDepartment.departmentUser)
+  @JoinColumn({ name: 'id_department' })
+  userDepartment: CityEntity;
 
   @OneToOne(() => CityEntity, (userCity) => userCity.cityUser)
   @JoinColumn({ name: 'id_city' })
