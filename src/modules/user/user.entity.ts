@@ -13,31 +13,31 @@ export class UserEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   last_name: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   password: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   phone_number: string;
 
-  @Column()
+  @Column({ type: 'int2' })
   id_country: number;
 
-  @Column()
+  @Column({ type: 'int2' })
   id_department: number;
 
-  @Column()
+  @Column({ type: 'varchar' })
   address: string;
 
-  @Column()
+  @Column({ type: 'int2' })
   id_city: number;
 
   @OneToOne(() => CountryEntity, (userCountry) => userCountry.countryUser)
@@ -56,19 +56,19 @@ export class UserEntity {
   @JoinColumn({ name: 'id_rol' })
   id_rol: RolesEntity;
 
-  @Column()
+  @Column({ type: 'varchar' })
   photoUrl: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   provider: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   ipAddress: string;
 
-  @Column()
+  @Column({ type: 'timestamp without time zone', default: () => 'CURRENT_DATE' })
   created_at: Date;
 
-  @Column()
+  @Column({ type: 'boolean' })
   status: boolean;
 
   token?: string;
