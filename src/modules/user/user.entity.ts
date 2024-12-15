@@ -1,7 +1,11 @@
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
+
+/* Entity */
 import { RolesEntity } from '../auth/roles/roles.entity';
+import { CityEntity } from '../location/city/city.entity';
+import { CountryEntity } from '../location/country/country.entity';
 
 @Entity('person')
 export class UserEntity {
@@ -22,6 +26,20 @@ export class UserEntity {
 
   @Column()
   phone_number: string;
+
+  @Column()
+  id_country: number;
+
+  @Column()
+  id_city: number;
+
+  @OneToOne(() => CountryEntity, (userCountry) => userCountry.countryUser)
+  @JoinColumn({ name: 'id_country' })
+  userCountry: CountryEntity;
+
+  @OneToOne(() => CityEntity, (userCity) => userCity.cityUser)
+  @JoinColumn({ name: 'id_city' })
+  userCity: CityEntity;
 
   @ManyToOne(() => RolesEntity, (role) => role.users)
   @JoinColumn({ name: 'id_rol' })

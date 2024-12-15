@@ -12,6 +12,7 @@ import { AppLoggerModule } from './modules/logger/logger.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './modules/databases/databases.module';
 import { WebsocketsModule } from './modules/websockets/websockets.module';
+import { LocationModule } from './modules/location/location.module';
 
 /* Service */
 import { DatabaseService } from './modules/databases/databases.service';
@@ -37,7 +38,8 @@ import { LogModule } from './modules/log/log.module';
     MailerModule,
     LoggerModule,
     WebsocketsModule,
-    LogModule
+    LogModule,
+    LocationModule,
   ],
   providers: [DatabaseService, { provide: APP_GUARD, useClass: ThrottlerGuard }, { provide: APP_FILTER, useClass: HttpExceptionFilter }],
 })
