@@ -44,6 +44,7 @@ async function bootstrap() {
     .addServer('https://api.logitech.com', 'Servidor de producción')
     .addTag('Autenticación', 'Endpoints dedicados a la autenticación y autorización de usuarios.')
     .addTag('Usuarios', 'Endpoints relacionados con la gestión de usuarios y sus permisos.')
+    .addTag('Ubicacion', 'Endpoints relacionado con las Ciudad, País y Departamento.')
     .addBearerAuth(
       {
         type: 'http',
@@ -56,8 +57,6 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
- 
 
   try {
     await app.listen(configService.get('PORT'));
