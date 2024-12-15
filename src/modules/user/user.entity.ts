@@ -35,6 +35,9 @@ export class UserEntity {
   id_department: number;
 
   @Column()
+  address: string;
+
+  @Column()
   id_city: number;
 
   @OneToOne(() => CountryEntity, (userCountry) => userCountry.countryUser)

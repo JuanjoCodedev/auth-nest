@@ -22,6 +22,9 @@ export class SignUpDto extends SignInDto {
   @IsInt({ message: 'Esta propiedad debe ser un número entero.' })
   readonly id_department: number;
 
+  @IsOptional()
+  readonly address: string;
+
   @IsNotEmpty({ message: 'Esta propiedad es obligatoria.' })
   @IsInt({ message: 'Esta propiedad debe ser un número entero.' })
   readonly id_city: number;
