@@ -312,7 +312,7 @@ npm run start:prod
 <img src="https://imgur.com/CoElyl2.jpg">
 
 ## Diagrama ER
-<img src="https://imgur.com/Gg7vLFG.jpg">
+<img src="https://imgur.com/exZ4Na7.jpg">
 
 ## Contribución
 

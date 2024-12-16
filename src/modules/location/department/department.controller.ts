@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Query, ValidationPipe } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 /* Service */
 import { DepartmentService } from './department.service';
@@ -8,6 +8,7 @@ import { DepartmentService } from './department.service';
 import { DepartmentDto } from './department.dto';
 import { QueryDto } from 'src/shared/dto/query.dto';
 
+@ApiTags('Ubicacion')
 @Controller('department')
 export class DepartmentController {
   constructor(private readonly _departmentService: DepartmentService) {}
