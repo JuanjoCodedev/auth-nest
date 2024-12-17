@@ -11,12 +11,6 @@ export class RolesService {
     private readonly rolesRepository: Repository<RolesEntity>,
   ) {}
 
-  /**
-   * ?Crea un nuevo rol en la base de datos.
-   *
-   * *@param body - Datos del rol a crear.
-   * *@returns Un objeto con un mensaje y los datos del rol creado.
-   */
   async createRol(body: RolesDto) {
     const existingRole = await this.rolesRepository.findOne({ where: { name: body.name } });
 

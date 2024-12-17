@@ -13,12 +13,6 @@ import { QueryDto } from 'src/shared/dto/query.dto';
 export class DepartmentController {
   constructor(private readonly _departmentService: DepartmentService) {}
 
-  /**
-   * ?Endpoint para obtener y filtrar una lista de departamento.
-   *
-   * *@param query Parámetros opcionales para filtrar y paginar los departamentos.
-   * *@returns Un objeto con los departamentos filtradas y datos de paginación.
-   */
   @Get('getDepartment')
   @ApiOperation({ summary: 'Obtiene y filtra los departamentos.' })
   @ApiResponse({ status: 200, description: 'Data con información obtenida.', type: QueryDto })
@@ -28,12 +22,6 @@ export class DepartmentController {
     return this._departmentService.getDepartment(mergedQuery);
   }
 
-  /**
-   * ?Endpoint para crear una nuevo departamento.
-   *
-   * *@param body Objeto que contiene los datos del nuevo departamento.
-   * *@returns Un mensaje de confirmación y los datos del departamento creado.
-   */
   @Post('createDepartment')
   @ApiOperation({ summary: 'Crea una nuevo departamento.' })
   @ApiResponse({ status: 201, description: 'Departamento creado exitosamente.' })

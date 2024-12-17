@@ -20,14 +20,6 @@ export class SignUpService {
     private tokenService: TokensService,
   ) {}
 
-  /**
-   * ?Registra un nuevo usuario y genera tokens de autenticación.
-   *
-   * *@param signUpDto - Datos del usuario para el registro.
-   * *@param ipAddress - Dirección IP del usuario para registrar.
-   * *@throws UnauthorizedException - Si el email ya está en uso.
-   * *@returns Un objeto que contiene tokens de autenticación para el nuevo usuario.
-   */
   async signUp(signUpDto: SignUpDto, ipAddress: string) {
     const existingUser = await this.authService.findOneByEmail(signUpDto.email);
     if (existingUser) throw new UnauthorizedException('Pruebe con un correo electrónico diferente.');

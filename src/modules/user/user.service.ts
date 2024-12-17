@@ -12,12 +12,6 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  /**
-   * ?Obtiene el perfil del usuario autenticado.
-   *
-   * *@param uid - Contiene el identificador unico del usuario.
-   * *@returns  Un objeto con un mensaje de confirmación y la informacion del usuario.
-   */
   async userProfile(id: number) {
     const user: UserEntity = await this.userRepository.findOne({ where: { id }, relations: ['id_rol'] });
 

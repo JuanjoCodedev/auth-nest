@@ -19,18 +19,6 @@ export class ResetPasswordService {
     private readonly eMailerService: EMailerService,
   ) {}
 
-  /**
-   * ?Envía un correo electrónico para restablecer la contraseña del usuario.
-   *
-   * *@param reset - Contiene la información del usuario como email y uid. El UID debe coincidir
-   * *con el UID del usuario encontrado mediante el correo electrónico.
-   *
-   * *@throws UnauthorizedException - Si el correo electrónico proporcionado no existe
-   * *en la base de datos o el UID no coincide con el correo electrónico.
-   *
-   * *@returns Un objeto con un mensaje de confirmación que indica que el
-   * *correo electrónico de recuperación ha sido enviado.
-   */
   async sendPasswordResetEmail(reset: ResetPasswordDto) {
     const user = await this.authService.findOneByEmail(reset.email);
 
