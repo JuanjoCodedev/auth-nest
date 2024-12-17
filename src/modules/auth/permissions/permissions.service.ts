@@ -11,12 +11,6 @@ export class PermissionsService {
     private readonly permissionsRepository: Repository<PermissionsEntity>,
   ) {}
 
-  /**
-   * ?Crea un nuevo permiso en la base de datos.
-   *
-   * *@param body - Datos del permiso a crear.
-   * *@returns Un objeto con un mensaje y los datos del permiso creado.
-   */
   async newPermission(body: PermissionsDto) {
     const permission = await this.permissionsRepository.findOne({ where: { route: body.route } });
 

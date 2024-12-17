@@ -16,12 +16,6 @@ export class CountryService {
     private readonly _countryRepository: Repository<CountryEntity>,
   ) {}
 
-  /**
-   * ?Obtiene y filtra una lista de paises.
-   *
-   * *@param query Objeto `QueryDto` que contiene parámetros opcionales para la consulta.
-   * *@returns Un objeto con los datos de los paises, el total de registros, las páginas totales, y la página actual.
-   */
   async getCountry(query: QueryDto) {
     const { page, limit, order, name } = query;
 
@@ -39,13 +33,6 @@ export class CountryService {
     return { data: country, totalCount, totalPages, currentPage: page };
   }
 
-  /**
-   * ?Crea una nuevo país.
-   *
-   * *@param body Objeto `CountryDto` que contiene los datos necesarios para crear un país.
-   * *@returns Un objeto con un mensaje de confirmación y los datos del país creado.
-   * *@throws ConflictException Si ya existe un país con el mismo nombre.
-   */
   async createCountry(body: CountryDto) {
     const country = await this._countryRepository.findOne({ where: { name: body.name } });
 

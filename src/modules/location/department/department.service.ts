@@ -16,12 +16,6 @@ export class DepartmentService {
     private readonly _departmentRepository: Repository<DepartmentEntity>,
   ) {}
 
-  /**
-   * ?Obtiene y filtra una lista de departamento.
-   *
-   * *@param query Objeto `QueryDto` que contiene parámetros opcionales para la consulta.
-   * *@returns Un objeto con los datos de los departamento, el total de registros, las páginas totales, y la página actual.
-   */
   async getDepartment(query: QueryDto) {
     const { page, limit, order, name } = query;
 
@@ -39,13 +33,6 @@ export class DepartmentService {
     return { data: department, totalCount, totalPages, currentPage: page };
   }
 
-  /**
-   * ?Crea una nuevo departamento.
-   *
-   * *@param body Objeto `DepartmentDto` que contiene los datos necesarios para crear un departamento.
-   * *@returns Un objeto con un mensaje de confirmación y los datos del departamento creado.
-   * *@throws ConflictException Si ya existe un departamento con el mismo nombre.
-   */
   async departmentCreate(body: DepartmentDto) {
     const department = await this._departmentRepository.findOne({ where: { name: body.name } });
 

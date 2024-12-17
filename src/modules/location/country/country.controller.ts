@@ -9,12 +9,6 @@ import { QueryDto } from 'src/shared/dto/query.dto';
 export class CountryController {
   constructor(private readonly _countryService: CountryService) {}
 
-  /**
-   * ?Endpoint para obtener y filtrar una lista de paises.
-   *
-   * *@param query Parámetros opcionales para filtrar y paginar los paises.
-   * *@returns Un objeto con los paises filtradas y datos de paginación.
-   */
   @Get('getCountry')
   @ApiOperation({ summary: 'Obtiene y filtra las paises.' })
   @ApiResponse({ status: 200, description: 'Data con información obtenida.', type: QueryDto })
@@ -24,12 +18,6 @@ export class CountryController {
     return this._countryService.getCountry(mergedQuery);
   }
 
-  /**
-   * ?Endpoint para crear una nuevo país.
-   *
-   * *@param body Objeto que contiene los datos del nuevo país.
-   * *@returns Un mensaje de confirmación y los datos del país creado.
-   */
   @Post('createCountry')
   @ApiOperation({ summary: 'Crea una nuevo país.' })
   @ApiResponse({ status: 201, description: 'País creado exitosamente.' })

@@ -8,12 +8,6 @@ import { RolesDto } from './roles.dto';
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
-  /**
-   * ?Crea un nuevo rol.
-   *
-   * *@param rolesDto - Datos necesarios para la creación del rol.
-   * *@returns - Retorna el objeto creado con la información del nuevo rol.
-   */
   @Post('newRol')
   @ApiOperation({ summary: 'Crea un nuevo rol.' })
   @ApiBody({ type: RolesDto })
