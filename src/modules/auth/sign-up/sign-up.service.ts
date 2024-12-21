@@ -3,7 +3,6 @@ import { SignUpDto } from './sign-up.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from 'src/modules/user/user.entity';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { TokensService } from '../tokens/tokens.service';
 import { AuthService } from '../auth.service';
 
@@ -12,9 +11,6 @@ export class SignUpService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-
-    @InjectPinoLogger(SignUpService.name)
-    private readonly logger: PinoLogger,
 
     private authService: AuthService,
     private tokenService: TokensService,
