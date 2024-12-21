@@ -22,7 +22,6 @@ Este proyecto es una aplicación de autenticación que permite a los usuarios re
 - **Hashing de contraseñas**: bcrypt.
 - **Envios de correos electrónicos**: Mailer.
 - **CORS**: Para el manejo de solicitudes entre dominios.
-- **Logger**: Pino para el registro de logs.
 - **Plantillas de correo electrónico**: Handlebars.
 - **Contenedores**: Docker para el despliegue y gestión de contenedores.
 - **Documentación de API**: Swagger para la generación de documentación de API.

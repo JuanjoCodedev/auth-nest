@@ -6,14 +6,14 @@ export class WebSocketsGateway implements OnGatewayInit, OnGatewayConnection, On
   @WebSocketServer() server: Server;
 
   afterInit(server: any) {
-    console.log('Esto se ejecuta cuando inicia');
+    console.log('Websocket ejecutado...');
   }
 
   handleConnection(client: Socket, ...args: any[]) {
-    console.log('Usuario conectado', client.id);
+    console.log('Usuario conectado:', client.id);
   }
 
   handleDisconnect(client: Socket) {
-    console.log('Usuario desconectado', client.id);
+    console.log('Usuario desconectado:', client.id);
   }
 }

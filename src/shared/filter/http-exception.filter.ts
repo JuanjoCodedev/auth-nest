@@ -9,7 +9,7 @@ import { LogService } from 'src/modules/log/log.service';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor(private readonly _logService: LogService) {}
+  constructor(private readonly _logService: LogService) { }
 
   async catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();

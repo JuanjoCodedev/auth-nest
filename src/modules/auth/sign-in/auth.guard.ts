@@ -1,17 +1,15 @@
 import { TokensService } from './../tokens/tokens.service';
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  private readonly _logger = new Logger(AuthGuard.name);
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly tokensService: TokensService,
-
-    @InjectPinoLogger(AuthGuard.name)
-    private readonly logger: PinoLogger,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -22,8 +20,6 @@ export class AuthGuard implements CanActivate {
 
     try {
       const payload = await this.jwtService.verifyAsync(token, { secret: 'JWT_SECRET' });
-
-      this.logger.debug({ context: 'AuthGuards', message: `Payload generado', ${payload}` });
 
       request['user'] = payload;
     } catch (error) {
@@ -40,9 +36,9 @@ export class AuthGuard implements CanActivate {
         const payload = await this.jwtService.verify(newTokenResponse.token, { secret: 'JWT_SECRET' });
 
         if (payload.refresh) {
-          this.logger.debug({ context: 'AuthGuards', message: `Se ha renovado el token', ${payload}` });
+          this._logger.log({ context: 'AuthGuards', message: `Se ha renovado el token', ${payload}` });
         } else {
-          this.logger.debug({ context: 'AuthGuards', message: `No se ha renovado el token` });
+          this._logger.error({ context: 'AuthGuards', message: `No se ha renovado el token` });
         }
 
         request['user'] = payload;
