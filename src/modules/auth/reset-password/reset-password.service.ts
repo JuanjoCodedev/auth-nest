@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 
 /* Service */
 import { TokensService } from './../tokens/tokens.service';
@@ -30,9 +29,9 @@ export class ResetPasswordService {
 
     if (!user) throw new UnauthorizedException('Este email es invalido, por favor vuelva a intentarlo.');
 
-    const newPassword = this.authService.generateRandomPassword();
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userRepository.update({ id: user.id }, { password: hashedPassword });
+    const newPassword = await this.authService.generateRandomPassword();
+
+    await this.userRepository.update({ id: user.id }, { password: newPassword });
 
     const payload = { uid: user.id, roles: user.id_rol, purpose: 'Reset Password' };
     const tokenReset = await this.tokensService.generateToken(payload, '30m', 'JWT_SECRET');
@@ -40,10 +39,7 @@ export class ResetPasswordService {
     const checkLink = `http://localhost:8100/auth/recover-pass/?uid=${user.id}&token=${tokenReset}`;
 
     await this.eMailerService.sendPasswordResetEmail(
-      {
-        email: user.email,
-        name: user.name,
-      },
+      { email: user.email, name: user.name },
       newPassword,
       checkLink,
     );

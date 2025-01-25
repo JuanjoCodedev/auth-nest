@@ -10,7 +10,7 @@ import { AuthService } from 'src/modules/auth/auth.service';
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
-  constructor(private authService: AuthService, private readonly tokensService:TokensService) {
+  constructor(private authService: AuthService, private readonly tokensService: TokensService) {
     super({
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -27,7 +27,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
     let user = await this.authService.findOneByEmail(email);
 
     if (!user) {
-      const randomPassword = this.authService.generateRandomPassword();
+      const randomPassword = await this.authService.generateRandomPassword();
       user = await this.authService.continueWithTheProvider({
         email: email,
         name: username,

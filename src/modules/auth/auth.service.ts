@@ -18,9 +18,9 @@ export class AuthService {
     return this.userRepository.findOne({ where: { email: userEmail } });
   }
 
-  public generateRandomPassword(): string {
+  public async generateRandomPassword(): Promise<string> {
     const randomPassword = Math.random().toString(36).slice(-8);
-    return randomPassword;
+    return await this.textHash(randomPassword, 12);
   }
 
   public async continueWithTheProvider(userData: Partial<UserEntity>): Promise<UserEntity> {

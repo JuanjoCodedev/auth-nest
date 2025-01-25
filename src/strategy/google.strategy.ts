@@ -29,7 +29,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     let user = await this.authService.findOneByEmail(email);
 
     if (!user) {
-      const randomPassword = this.authService.generateRandomPassword();
+      const randomPassword = await this.authService.generateRandomPassword();
       user = await this.authService.continueWithTheProvider({
         email: email,
         name: `${name.givenName} ${name.familyName}`,
