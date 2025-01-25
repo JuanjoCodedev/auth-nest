@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 /* Entity */
 import { UserEntity } from '../user/user.entity';
@@ -25,5 +26,10 @@ export class AuthService {
   public async continueWithTheProvider(userData: Partial<UserEntity>): Promise<UserEntity> {
     const user = this.userRepository.create(userData);
     return this.userRepository.save(user);
+  }
+
+  public async textHash(key: string, salt: number): Promise<string> {
+    const hashText = await bcrypt.hash(key, salt);
+    return hashText;
   }
 }

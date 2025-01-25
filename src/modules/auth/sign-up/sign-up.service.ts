@@ -26,8 +26,10 @@ export class SignUpService {
     const existingUser = await this.authService.findOneByEmail(signUpDto.email);
     if (existingUser) throw new UnauthorizedException('Pruebe con un correo electrónico diferente.');
 
-    const newUser = this.userRepository.create({ ...signUpDto, ipAddress: ipAddress });
-    const savedAccount = await this.userRepository.save(newUser);
+    const passHash = await this.authService.textHash(signUpDto.password, 12);
+
+    const newUser: UserEntity = this.userRepository.create({ ...signUpDto, password: passHash, ipAddress: ipAddress });
+    const savedAccount: UserEntity = await this.userRepository.save(newUser);
 
     return this.tokenService.generateAccessAndRefreshTokens(savedAccount);
   }
