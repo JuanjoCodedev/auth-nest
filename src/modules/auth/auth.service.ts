@@ -8,18 +8,18 @@ export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
-  async findOneByEmail(userEmail: string) {
+  public async findOneByEmail(userEmail: string) {
     return this.userRepository.findOne({ where: { email: userEmail } });
   }
 
-  generateRandomPassword(): string {
+  public generateRandomPassword(): string {
     const randomPassword = Math.random().toString(36).slice(-8);
     return randomPassword;
   }
 
-  async continueWithTheProvider(userData: Partial<UserEntity>): Promise<UserEntity> {
+  public async continueWithTheProvider(userData: Partial<UserEntity>): Promise<UserEntity> {
     const user = this.userRepository.create(userData);
     return this.userRepository.save(user);
   }

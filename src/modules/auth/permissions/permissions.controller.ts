@@ -13,7 +13,7 @@ export class PermissionsController {
   @ApiBody({ type: PermissionsDto })
   @ApiResponse({ status: 201, description: 'Nuevo permiso creado exitosamente.', type: PermissionsDto })
   @ApiResponse({ status: 400, description: 'Datos de entrada inválidos.' })
-  async createAccount(@Body() permissionsDto: PermissionsDto) {
+  async newPermission(@Body() permissionsDto: PermissionsDto) {
     return await this.permissionsService.newPermission(permissionsDto);
   }
 }

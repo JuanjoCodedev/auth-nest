@@ -34,11 +34,11 @@ export class UserEntity {
   @Column({ type: 'int2' })
   id_department: number;
 
-  @Column({ type: 'varchar' })
-  address: string;
-
   @Column({ type: 'int2' })
   id_city: number;
+
+  @Column({ type: 'varchar' })
+  address: string;
 
   @OneToOne(() => CountryEntity, (userCountry) => userCountry.countryUser)
   @JoinColumn({ name: 'id_country' })
@@ -65,11 +65,14 @@ export class UserEntity {
   @Column({ type: 'varchar' })
   ipAddress: string;
 
+  @Column({ type: 'boolean' })
+  status: boolean;
+
   @Column({ type: 'timestamp without time zone', default: () => 'CURRENT_DATE' })
   created_at: Date;
 
-  @Column({ type: 'boolean' })
-  status: boolean;
+  @Column({ type: 'timestamp without time zone', default: () => 'CURRENT_DATE' })
+  updated_at: Date;
 
   token?: string;
   refreshToken?: string;

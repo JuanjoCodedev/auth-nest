@@ -1,16 +1,20 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
-import { UpdatePasswordDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
+
+/* Entity */
+import { UserEntity } from './user.entity';
+
+/* Dto */
+import { UpdatePasswordDto } from './user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
   async userProfile(id: number) {
     const user: UserEntity = await this.userRepository.findOne({ where: { id }, relations: ['id_rol'] });
@@ -29,14 +33,7 @@ export class UserService {
     };
   }
 
-  /**
-   * ?Actualiza la contraseña del usuario si su Token es válido.
-   *
-   * *@param uid - Contiene el identificador único del usuario.
-   * *@param updatePasswordDto - Contiene la nueva contraseña a actualizar.
-   * *@throws NotFoundException - Si el usuario no existe en la base de datos.
-   * *@returns Un objeto con un mensaje de confirmación y la información del usuario.
-   */
+
   async recoverPassword(id: number, updatePasswordDto: UpdatePasswordDto) {
     const user: UserEntity = await this.userRepository.findOne({ where: { id } });
 

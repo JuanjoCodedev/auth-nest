@@ -17,7 +17,7 @@ export class DepartmentController {
   @ApiOperation({ summary: 'Obtiene y filtra los departamentos.' })
   @ApiResponse({ status: 200, description: 'Data con información obtenida.', type: QueryDto })
   @ApiResponse({ status: 400, description: 'Datos de entrada inválidos.' })
-  async getCompany(@Query(new ValidationPipe()) query: QueryDto) {
+  async getDepartment(@Query(new ValidationPipe()) query: QueryDto) {
     const mergedQuery = { limit: 10, page: 1, order: 'name', name: '', ...query };
     return this._departmentService.getDepartment(mergedQuery);
   }

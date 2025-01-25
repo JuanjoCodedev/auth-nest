@@ -13,7 +13,7 @@ export class RolesController {
   @ApiBody({ type: RolesDto })
   @ApiResponse({ status: 201, description: 'Nuevo rol creado exitosamente.', type: RolesDto })
   @ApiResponse({ status: 400, description: 'Datos de entrada inválidos.' })
-  async createAccount(@Body() rolesDto: RolesDto) {
+  async createRol(@Body() rolesDto: RolesDto) {
     return await this.rolesService.createRol(rolesDto);
   }
 }

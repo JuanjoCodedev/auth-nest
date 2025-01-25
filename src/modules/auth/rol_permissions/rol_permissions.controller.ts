@@ -13,8 +13,7 @@ export class RolPermissionsController {
   @ApiBody({ type: RolPermissionsDto })
   @ApiResponse({ status: 201, description: 'Nuevo permiso y rol creado exitosamente.', type: RolPermissionsDto })
   @ApiResponse({ status: 400, description: 'Datos de entrada inválidos.' })
-  async createAccount(@Body() permissionsDto: RolPermissionsDto) {
-    console.log('Received body:', permissionsDto);
+  async assignRoleAndPermissions(@Body() permissionsDto: RolPermissionsDto) {
     return await this.rolPermissionsService.AssignRoleAndPermissions(permissionsDto);
   }
 }

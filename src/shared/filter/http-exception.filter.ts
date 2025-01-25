@@ -22,7 +22,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const logData: LogDto = {
       path: request.url,
       message: exception.message,
-      statusCode: statusCode,
+      status_code: statusCode,
       client_ip: String(clientIp),
     };
 

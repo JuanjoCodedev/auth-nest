@@ -1,8 +1,15 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
-import { UserService } from './user.service';
-import { Auth } from 'src/shared/decorators/auth.decorator';
-import { UpdatePasswordDto } from './user.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+
+/* Service */
+import { UserService } from './user.service';
+
+/* Decorator */
+import { Auth } from 'src/shared/decorators/auth.decorator';
+
+/* Dto */
+import { UpdatePasswordDto } from './user.dto';
+
 
 @ApiTags('Usuarios')
 @ApiUnauthorizedResponse({

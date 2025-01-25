@@ -14,20 +14,20 @@ export class SignUpDto extends SignInDto {
   @IsString()
   readonly photoUrl: string;
 
-  @IsNotEmpty({ message: 'Esta propiedad es obligatoria.' })
-  @IsInt({ message: 'Esta propiedad debe ser un número entero.' })
+  @IsNotEmpty({ message: 'Identificador de país es obligatoria.' })
+  @IsInt({ message: 'Identificador de país  debe ser un número entero.' })
   readonly id_country: number;
 
-  @IsNotEmpty({ message: 'Esta propiedad es obligatoria.' })
-  @IsInt({ message: 'Esta propiedad debe ser un número entero.' })
+  @IsNotEmpty({ message: 'Identificador de departamento es obligatoria.' })
+  @IsInt({ message: 'Identificador de departamento  debe ser un número entero.' })
   readonly id_department: number;
+
+  @IsNotEmpty({ message: 'Identificador de ciudad es obligatoria.' })
+  @IsInt({ message: 'Identificador de ciudad debe ser un número entero.' })
+  readonly id_city: number;
 
   @IsOptional()
   readonly address: string;
-
-  @IsNotEmpty({ message: 'Esta propiedad es obligatoria.' })
-  @IsInt({ message: 'Esta propiedad debe ser un número entero.' })
-  readonly id_city: number;
 
   @IsEmpty({ message: 'El proveedor de autenticación, es invalido.' })
   readonly provider: string;
