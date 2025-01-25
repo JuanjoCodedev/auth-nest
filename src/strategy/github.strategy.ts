@@ -1,7 +1,11 @@
-import { TokensService } from './../modules/auth/tokens/tokens.service';
 import { Injectable } from '@nestjs/common';
+
+/* Passport */
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
+
+/* Service */
+import { TokensService } from './../modules/auth/tokens/tokens.service';
 import { AuthService } from 'src/modules/auth/auth.service';
 
 @Injectable()

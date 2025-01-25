@@ -1,8 +1,11 @@
-import { TokensService } from './../modules/auth/tokens/tokens.service';
 import { Injectable } from '@nestjs/common';
+
+/* Passport */
 import { PassportStrategy } from '@nestjs/passport';
-import { Token } from 'nodemailer/lib/xoauth2';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+
+/* Service */
+import { TokensService } from './../modules/auth/tokens/tokens.service';
 import { AuthService } from 'src/modules/auth/auth.service';
 
 @Injectable()

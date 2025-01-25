@@ -8,7 +8,7 @@ export class LogDto {
   message: string;
 
   @IsEmpty()
-  statusCode: number;
+  status_code: number;
 
   @IsEmpty()
   client_ip: string;

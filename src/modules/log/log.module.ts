@@ -1,6 +1,10 @@
 import { Module } from '@nestjs/common';
-import { LogService } from './log.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+/* Service */
+import { LogService } from './log.service';
+
+/* Entity */
 import { LogEntity } from './log.entity';
 
 @Module({

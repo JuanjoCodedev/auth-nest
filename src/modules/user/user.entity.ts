@@ -69,6 +69,9 @@ export class UserEntity {
   created_at: Date;
 
   @Column()
+  updated_at: Date;
+
+  @Column()
   status: boolean;
 
   token?: string;

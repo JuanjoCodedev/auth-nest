@@ -1,5 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable, ForbiddenException } from '@nestjs/common';
+
+/* Entity */
 import { PermissionsEntity } from 'src/modules/auth/permissions/permissions.entity';
+
+/* Service */
 import { RolesService } from 'src/modules/auth/roles/roles.service';
 
 @Injectable()

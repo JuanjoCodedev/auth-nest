@@ -1,7 +1,10 @@
-import { TokensService } from './../tokens/tokens.service';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
+
+/* Service */
+import { TokensService } from './../tokens/tokens.service';
+
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()

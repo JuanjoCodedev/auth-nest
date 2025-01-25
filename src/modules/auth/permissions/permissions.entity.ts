@@ -1,5 +1,4 @@
-import { BeforeInsert, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { RolesEntity } from '../roles/roles.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RolPermissionsEntity } from '../rol_permissions/rol_permissions.entity';
 
 @Entity('permissions')

@@ -1,7 +1,11 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RolesEntity } from './roles.entity';
 import { Repository } from 'typeorm';
+
+/* Entity */
+import { RolesEntity } from './roles.entity';
+
+/* Dtos */
 import { RolesDto } from './roles.dto';
 
 @Injectable()
@@ -9,14 +13,8 @@ export class RolesService {
   constructor(
     @InjectRepository(RolesEntity)
     private readonly rolesRepository: Repository<RolesEntity>,
-  ) {}
+  ) { }
 
-  /**
-   * ?Crea un nuevo rol en la base de datos.
-   *
-   * *@param body - Datos del rol a crear.
-   * *@returns Un objeto con un mensaje y los datos del rol creado.
-   */
   async createRol(body: RolesDto) {
     const existingRole = await this.rolesRepository.findOne({ where: { name: body.name } });
 

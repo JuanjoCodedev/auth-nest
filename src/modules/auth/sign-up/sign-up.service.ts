@@ -1,11 +1,18 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { SignUpDto } from './sign-up.dto';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
+/* Entity */
 import { UserEntity } from 'src/modules/user/user.entity';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+
+
+/* Service */
 import { TokensService } from '../tokens/tokens.service';
 import { AuthService } from '../auth.service';
+
+/* Dtos */
+import { SignUpDto } from './sign-up.dto';
 
 @Injectable()
 export class SignUpService {
@@ -18,16 +25,8 @@ export class SignUpService {
 
     private authService: AuthService,
     private tokenService: TokensService,
-  ) {}
+  ) { }
 
-  /**
-   * ?Registra un nuevo usuario y genera tokens de autenticación.
-   *
-   * *@param signUpDto - Datos del usuario para el registro.
-   * *@param ipAddress - Dirección IP del usuario para registrar.
-   * *@throws UnauthorizedException - Si el email ya está en uso.
-   * *@returns Un objeto que contiene tokens de autenticación para el nuevo usuario.
-   */
   async signUp(signUpDto: SignUpDto, ipAddress: string) {
     const existingUser = await this.authService.findOneByEmail(signUpDto.email);
     if (existingUser) throw new UnauthorizedException('Pruebe con un correo electrónico diferente.');

@@ -12,7 +12,7 @@ export class LogEntity {
   message: string;
 
   @Column({ type: "int2" })
-  statusCode: number;
+  status_code: number;
 
   @Column({ type: 'varchar' })
   client_ip: string;
