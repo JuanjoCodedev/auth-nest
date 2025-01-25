@@ -3,12 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { LoggerModule } from 'nestjs-pino';
 import { MailerModule } from '@nestjs-modules/mailer';
 
 /* Module */
 import { UserModule } from './modules/user/user.module';
-import { AppLoggerModule } from './modules/logger/logger.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './modules/databases/databases.module';
 import { WebsocketsModule } from './modules/websockets/websockets.module';
@@ -32,11 +30,9 @@ import { LogModule } from './modules/log/log.module';
       },
     ]),
     UserModule,
-    AppLoggerModule,
     DatabaseModule,
     AuthModule,
     MailerModule,
-    LoggerModule,
     WebsocketsModule,
     LogModule,
     LocationModule,

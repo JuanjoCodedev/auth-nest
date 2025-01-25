@@ -19,12 +19,6 @@ export class RolPermissionsService {
     private readonly permissionRepository: Repository<PermissionsEntity>,
   ) {}
 
-  /**
-   * Asigna un rol y permisos específicos creando una nueva relación en la base de datos.
-   *
-   * @param body - Datos necesarios para crear la relación rol-permiso.
-   * @returns - Un objeto con un mensaje de éxito y los datos creados.
-   */
   async AssignRoleAndPermissions(body: RolPermissionsDto) {
     const role = await this.rolRepository.findOne({ where: { id: body.id_rol } });
     if (!role) throw new NotFoundException(`Rol con ID ${body.id_rol} no encontrado.`);

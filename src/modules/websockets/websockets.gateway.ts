@@ -5,31 +5,15 @@ import { Server, Socket } from 'socket.io';
 export class WebSocketsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
-  /**
-   * ?Método que se ejecuta después de que el servidor WebSocket se ha inicializado.
-   *
-   * *@param {Server} server - Instancia del servidor WebSocket.
-   */
   afterInit(server: any) {
-    console.log('Esto se ejecuta cuando inicia');
+    console.log('Websocket ejecutado...');
   }
 
-  /**
-   * ?Método que se ejecuta cuando un cliente se conecta al servidor WebSocket.
-   *
-   * *@param {Socket} client - Instancia del cliente que se ha conectado.
-   * *@param {...any[]} args - Argumentos adicionales que pueden ser pasados durante la conexión.
-   */
   handleConnection(client: Socket, ...args: any[]) {
-    console.log('Usuario conectado', client.id);
+    console.log('Usuario conectado:', client.id);
   }
 
-  /**
-   * ?Método que se ejecuta cuando un cliente se desconecta del servidor WebSocket.
-   *
-   * *@param {Socket} client - Instancia del cliente que se ha desconectado.
-   */
   handleDisconnect(client: Socket) {
-    console.log('Usuario desconectado', client.id);
+    console.log('Usuario desconectado:', client.id);
   }
 }

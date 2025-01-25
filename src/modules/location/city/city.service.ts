@@ -16,12 +16,6 @@ export class CityService {
     private readonly _cityRepository: Repository<CityEntity>,
   ) {}
 
-  /**
-   * ?Obtiene y filtra una lista de ciudades.
-   *
-   * *@param query Objeto `QueryDto` que contiene parámetros opcionales para la consulta.
-   * *@returns Un objeto con los datos de las ciudades, el total de registros, las páginas totales, y la página actual.
-   */
   async getCity(query: QueryDto) {
     const { page, limit, order, name } = query;
 
@@ -39,13 +33,6 @@ export class CityService {
     return { data: city, totalCount, totalPages, currentPage: page };
   }
 
-  /**
-   * ?Crea una nueva ciudad.
-   *
-   * *@param body Objeto `CityDto` que contiene los datos necesarios para crear una ciudad.
-   * *@returns Un objeto con un mensaje de confirmación y los datos de la ciudad creada.
-   * *@throws ConflictException Si ya existe una ciudad con el mismo nombre.
-   */
   async cityCreate(body: CityDto) {
     const city = await this._cityRepository.findOne({ where: { name: body.name } });
 
