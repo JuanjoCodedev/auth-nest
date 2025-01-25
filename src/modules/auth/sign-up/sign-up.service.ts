@@ -1,11 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 /* Entity */
 import { UserEntity } from 'src/modules/user/user.entity';
-
 
 /* Service */
 import { TokensService } from '../tokens/tokens.service';
@@ -19,9 +17,6 @@ export class SignUpService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-
-    @InjectPinoLogger(SignUpService.name)
-    private readonly logger: PinoLogger,
 
     private authService: AuthService,
     private tokenService: TokensService,

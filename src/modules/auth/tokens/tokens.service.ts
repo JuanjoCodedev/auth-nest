@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 /* Entity */
 import { UserEntity } from 'src/modules/user/user.entity';
@@ -13,9 +12,6 @@ export class TokensService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
-
-    @InjectPinoLogger(TokensService.name)
-    private readonly logger: PinoLogger,
   ) { }
 
   async generateToken(payload: any, expiresIn: string, secret: string) {
@@ -29,7 +25,7 @@ export class TokensService {
     const refreshPayload = { sub: user.id, email: user.email, roles: user.id_rol, purpose: 'refresh' };
     const refreshToken = await this.generateToken(refreshPayload, '10h', 'JWT_SECRET');
 
-    this.logger.debug({ context: 'AuthService', message: `Token generado para usuario ${user.email}` });
+    console.debug({ context: 'AuthService', message: `Token generado para usuario ${user.email}` });
     return { uid: user.id, name: user.name, email: user.email, roles: user.id_rol, token, refreshToken };
   }
 
@@ -44,10 +40,10 @@ export class TokensService {
       const newPayload = { sub: user.id, email: user.email, roles: user.id_rol, purpose: 'newToken' };
       const newToken = await this.generateToken(newPayload, '5h', 'JWT_SECRET');
 
-      this.logger.debug({ context: 'AuthService', message: `Token actualizado para el usuario ${user.email}` });
+      console.debug({ context: 'AuthService', message: `Token actualizado para el usuario ${user.email}` });
       return { token: newToken };
     } catch (error) {
-      this.logger.error('Error al refrescar el token', error);
+      console.error('Error al refrescar el token', error);
       throw new UnauthorizedException('Refresh token inválido');
     }
   }

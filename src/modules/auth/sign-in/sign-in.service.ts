@@ -1,6 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { compare } from 'bcrypt';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 /* Dtos */
 import { SignInDto } from './sign-in.dto';
@@ -13,9 +12,6 @@ import { EMailerService } from 'src/modules/mailer/mailer.service';
 @Injectable()
 export class SignInService {
   constructor(
-    @InjectPinoLogger(SignInService.name)
-    private readonly logger: PinoLogger,
-
     private authService: AuthService,
     private tokenService: TokensService,
     private readonly mailerService: EMailerService,
@@ -29,7 +25,7 @@ export class SignInService {
     if (!isPasswordValid) throw new UnauthorizedException('Contraseña incorrecta.');
 
     const { password: _, ...result } = user;
-    this.logger.debug({ context: 'AuthService', message: `Usuario ${useremail} validado` });
+    console.debug({ context: 'AuthService', message: `Usuario ${useremail} validado` });
     return result;
   }
 

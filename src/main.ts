@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from 'nestjs-pino';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -13,7 +12,6 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
 
   const configService = app.get(ConfigService);
-  configService.get<string>('NODE_ENV') !== 'production' ? app.useLogger(app.get(Logger)) : undefined;
 
   app.useGlobalPipes(
     new ValidationPipe({

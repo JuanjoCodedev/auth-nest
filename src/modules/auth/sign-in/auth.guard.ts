@@ -5,17 +5,12 @@ import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 /* Service */
 import { TokensService } from './../tokens/tokens.service';
 
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly tokensService: TokensService,
-
-    @InjectPinoLogger(AuthGuard.name)
-    private readonly logger: PinoLogger,
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -25,8 +20,6 @@ export class AuthGuard implements CanActivate {
 
     try {
       const payload = await this.jwtService.verifyAsync(token, { secret: 'JWT_SECRET' });
-
-      this.logger.debug({ context: 'AuthGuards', message: `Payload generado', ${payload}` });
 
       request['user'] = payload;
     } catch (error) {
@@ -43,9 +36,9 @@ export class AuthGuard implements CanActivate {
         const payload = await this.jwtService.verify(newTokenResponse.token, { secret: 'JWT_SECRET' });
 
         if (payload.refresh) {
-          this.logger.debug({ context: 'AuthGuards', message: `Se ha renovado el token', ${payload}` });
+          console.debug({ context: 'AuthGuards', message: `Se ha renovado el token', ${payload}` });
         } else {
-          this.logger.debug({ context: 'AuthGuards', message: `No se ha renovado el token` });
+          console.debug({ context: 'AuthGuards', message: `No se ha renovado el token` });
         }
 
         request['user'] = payload;
