@@ -9,6 +9,9 @@ import { TokensService } from '../tokens/tokens.service';
 import { AuthService } from '../auth.service';
 import { EMailerService } from 'src/modules/mailer/mailer.service';
 
+/* Interface */
+import { Int_Auth_Response, Int_Auth_Token_Response } from '../auth.interface';
+
 @Injectable()
 export class SignInService {
   constructor(
@@ -29,12 +32,12 @@ export class SignInService {
     return result;
   }
 
-  async signIn(signInDto: SignInDto, req: Request) {
+  async signIn(signInDto: SignInDto, req: Request): Promise<Int_Auth_Response> {
     const user = await this.validateUser(signInDto.email, signInDto.password, req);
     return this.tokenService.generateAccessAndRefreshTokens(user);
   }
 
-  async sendUnkanownIpEmail(reset: string) {
+  async sendUnkanownIpEmail(reset: string): Promise<Int_Auth_Token_Response> {
     const user = await this.authService.findOneByEmail(reset);
     if (!user) throw new UnauthorizedException('Este email es invalido, por favor vuelva a intentarlo.');
 

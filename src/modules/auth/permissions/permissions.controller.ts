@@ -7,6 +7,9 @@ import { PermissionsService } from './permissions.service';
 /* Dtos */
 import { PermissionsDto } from './permissions.dto';
 
+/* Interface */
+import { Int_Permissions_Response } from './interfaces.permissions';
+
 @ApiTags('Autenticación')
 @Controller('permissions')
 export class PermissionsController {
@@ -17,7 +20,7 @@ export class PermissionsController {
   @ApiBody({ type: PermissionsDto })
   @ApiResponse({ status: 201, description: 'Nuevo permiso creado exitosamente.', type: PermissionsDto })
   @ApiResponse({ status: 400, description: 'Datos de entrada inválidos.' })
-  async newPermission(@Body() permissionsDto: PermissionsDto) {
+  async newPermission(@Body() permissionsDto: PermissionsDto): Promise<Int_Permissions_Response> {
     return await this.permissionsService.newPermission(permissionsDto);
   }
 }

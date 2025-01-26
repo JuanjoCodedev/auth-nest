@@ -9,6 +9,9 @@ import { CountryEntity } from './country.entity';
 import { CountryDto } from './country.dto';
 import { QueryDto } from 'src/shared/dto/query.dto';
 
+/* Interface */
+import { Int_Country_Pagination_Response, Int_Country_Response } from './country.interface';
+
 @Injectable()
 export class CountryService {
   constructor(
@@ -16,7 +19,7 @@ export class CountryService {
     private readonly _countryRepository: Repository<CountryEntity>,
   ) { }
 
-  async getCountry(query: QueryDto) {
+  async getCountry(query: QueryDto): Promise<Int_Country_Pagination_Response> {
     const { page, limit, order, name } = query;
 
     const skip = (page - 1) * limit;
@@ -33,7 +36,7 @@ export class CountryService {
     return { data: country, totalCount, totalPages, currentPage: page };
   }
 
-  async createCountry(body: CountryDto) {
+  async createCountry(body: CountryDto): Promise<Int_Country_Response> {
     const country = await this._countryRepository.findOne({ where: { name: body.name } });
 
     if (country) throw new ConflictException(`El país ${body.name} ya existe.`);

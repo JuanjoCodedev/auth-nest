@@ -13,7 +13,7 @@ export class WithProviderController {
   @ApiResponse({ status: 200, description: 'Solicitud exitosa para iniciar autenticación con Google.' })
   @ApiResponse({ status: 302, description: 'Redirección al flujo de autenticación de Google.' })
   @ApiResponse({ status: 401, description: 'Error al intentar autenticar con Google.' })
-  async googleAuth() {
+  async googleAuth(): Promise<void> {
     // Se inicia el flujo de autenticación con Google
     // El guard de Passport maneja la redirección automáticamente.
   }
@@ -33,7 +33,7 @@ export class WithProviderController {
   @ApiResponse({ status: 200, description: 'Solicitud exitosa para iniciar autenticación con Github.' })
   @ApiResponse({ status: 302, description: 'Redirección al flujo de autenticación de Github.' })
   @ApiResponse({ status: 401, description: 'Error al intentar autenticar con Github.' })
-  async githubAuth() {
+  async githubAuth(): Promise<void> {
     // Inicia el flujo de inicio de sesión de GitHub
     // El guard de Passport maneja la redirección automáticamente.
   }

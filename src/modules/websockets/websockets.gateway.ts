@@ -5,15 +5,15 @@ import { Server, Socket } from 'socket.io';
 export class WebSocketsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
-  afterInit(server: any) {
+  afterInit(server: any): void {
     console.log('Socket ejecutado');
   }
 
-  handleConnection(client: Socket, ...args: any[]) {
+  handleConnection(client: Socket, ...args: any[]): void {
     console.log('Usuario conectado:', client.id);
   }
 
-  handleDisconnect(client: Socket) {
+  handleDisconnect(client: Socket): void {
     console.log('Usuario desconectado:', client.id);
   }
 }

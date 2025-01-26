@@ -8,6 +8,9 @@ import { RolesEntity } from './roles.entity';
 /* Dtos */
 import { RolesDto } from './roles.dto';
 
+/* Interface */
+import { Int_Roles_Response } from './roles.interface';
+
 @Injectable()
 export class RolesService {
   constructor(
@@ -15,7 +18,7 @@ export class RolesService {
     private readonly rolesRepository: Repository<RolesEntity>,
   ) { }
 
-  async createRol(body: RolesDto) {
+  async createRol(body: RolesDto): Promise<Int_Roles_Response> {
     const existingRole = await this.rolesRepository.findOne({ where: { name: body.name } });
 
     if (existingRole) throw new ConflictException(`El rol "${body.name}" ya está en uso. Por favor, prueba con otro nombre.`);

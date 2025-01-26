@@ -8,6 +8,9 @@ import { SignUpService } from './sign-up.service';
 /* dtos */
 import { SignUpDto } from './sign-up.dto';
 
+/* Interface */
+import { Int_Auth_Response } from '../auth.interface';
+
 @ApiTags('Autenticación')
 @Controller('sign-up')
 export class SignUpController {
@@ -18,7 +21,7 @@ export class SignUpController {
   @ApiBody({ type: SignUpDto })
   @ApiResponse({ status: 201, description: 'Cuenta creada con éxito.', type: SignUpDto })
   @ApiResponse({ status: 400, description: 'Datos de entrada inválidos.' })
-  async createAccount(@Body() signUpDto: SignUpDto, @Req() req: Request) {
+  async createAccount(@Body() signUpDto: SignUpDto, @Req() req: Request): Promise<Int_Auth_Response> {
     const ipAddress = req.ip;
     return await this.signUpService.signUp(signUpDto, ipAddress);
   }

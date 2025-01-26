@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class HelperService {
   constructor() { }
 
-  public generateUniqueValue(date: Date, uid: number, guide: string) {
+  public generateUniqueValue(date: Date, uid: number, guide: string): string {
     const day = date.getDate();
     const month = date.getMonth() + 1; // ?Los meses van del 0 al 11
     const year = date.getFullYear() % 100; // ?Tomamos solo los dos últimos dígitos del año

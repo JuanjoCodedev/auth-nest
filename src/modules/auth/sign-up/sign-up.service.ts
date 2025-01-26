@@ -12,6 +12,9 @@ import { AuthService } from '../auth.service';
 /* Dtos */
 import { SignUpDto } from './sign-up.dto';
 
+/* Interface */
+import { Int_Auth_Response } from '../auth.interface';
+
 @Injectable()
 export class SignUpService {
   constructor(
@@ -22,7 +25,7 @@ export class SignUpService {
     private tokenService: TokensService,
   ) { }
 
-  async signUp(signUpDto: SignUpDto, ipAddress: string) {
+  async signUp(signUpDto: SignUpDto, ipAddress: string): Promise<Int_Auth_Response> {
     const existingUser = await this.authService.findOneByEmail(signUpDto.email);
     if (existingUser) throw new UnauthorizedException('Pruebe con un correo electrónico diferente.');
 

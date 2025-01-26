@@ -13,6 +13,9 @@ import { UserEntity } from 'src/modules/user/user.entity';
 /* Dtos */
 import { ResetPasswordDto } from './resetPassword.dto';
 
+/* Interface */
+import { Int_Reset_Pass_Response } from './reset-pass.interface';
+
 @Injectable()
 export class ResetPasswordService {
   constructor(
@@ -24,7 +27,7 @@ export class ResetPasswordService {
     private readonly eMailerService: EMailerService,
   ) { }
 
-  async sendPasswordResetEmail(reset: ResetPasswordDto) {
+  async sendPasswordResetEmail(reset: ResetPasswordDto): Promise<Int_Reset_Pass_Response> {
     const user = await this.authService.findOneByEmail(reset.email);
 
     if (!user) throw new UnauthorizedException('Este email es invalido, por favor vuelva a intentarlo.');

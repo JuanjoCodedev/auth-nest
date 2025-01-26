@@ -8,6 +8,9 @@ import { PermissionsEntity } from './permissions.entity';
 /* Service */
 import { PermissionsDto } from './permissions.dto';
 
+/* Interface */
+import { Int_Permissions_Response } from './interfaces.permissions';
+
 @Injectable()
 export class PermissionsService {
   constructor(
@@ -16,7 +19,7 @@ export class PermissionsService {
   ) { }
 
 
-  async newPermission(body: PermissionsDto) {
+  async newPermission(body: PermissionsDto): Promise<Int_Permissions_Response> {
     const permission = await this.permissionsRepository.findOne({ where: { route: body.route } });
 
     if (permission) throw new ConflictException(`El permiso "${body.route}" ya está en uso. Por favor, prueba con otro nombre.`);

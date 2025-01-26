@@ -9,6 +9,9 @@ import { UserEntity } from './user.entity';
 /* Dtos */
 import { UpdatePasswordDto } from './user.dto';
 
+/* Interface */
+import { Int_User_Response } from './user.interface';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -33,7 +36,7 @@ export class UserService {
     };
   }
 
-  async recoverPassword(id: number, updatePasswordDto: UpdatePasswordDto) {
+  async recoverPassword(id: number, updatePasswordDto: UpdatePasswordDto): Promise<Int_User_Response> {
     const user: UserEntity = await this.userRepository.findOne({ where: { id } });
 
     if (!user) {

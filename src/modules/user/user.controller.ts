@@ -8,6 +8,9 @@ import { Auth } from 'src/shared/decorators/auth.decorator';
 /* Dtos */
 import { UpdatePasswordDto } from './user.dto';
 
+/* Interface */
+import { Int_User_Response } from './user.interface';
+
 @ApiTags('Usuarios')
 @ApiUnauthorizedResponse({
   description: 'Se necesita un token de acceso para consumir el endpoint.',
@@ -28,7 +31,7 @@ export class UserController {
   @ApiOkResponse({ description: 'Contraseña actualizada con exito.' })
   @Auth()
   @Patch('recoverPassword/:id')
-  async recoverPassword(@Param('id') id: number, @Body() updatePasswordDto: UpdatePasswordDto) {
+  async recoverPassword(@Param('id') id: number, @Body() updatePasswordDto: UpdatePasswordDto): Promise<Int_User_Response> {
     return this.userService.recoverPassword(id, updatePasswordDto);
   }
 }

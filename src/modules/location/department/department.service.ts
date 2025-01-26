@@ -9,6 +9,9 @@ import { DepartmentEntity } from './department.entity';
 import { QueryDto } from 'src/shared/dto/query.dto';
 import { DepartmentDto } from './department.dto';
 
+/* Interface */
+import { Int_Department_Pagination_Response, Int_Department_Response } from './department.interface';
+
 @Injectable()
 export class DepartmentService {
   constructor(
@@ -16,7 +19,7 @@ export class DepartmentService {
     private readonly _departmentRepository: Repository<DepartmentEntity>,
   ) { }
 
-  async getDepartment(query: QueryDto) {
+  async getDepartment(query: QueryDto): Promise<Int_Department_Pagination_Response> {
     const { page, limit, order, name } = query;
 
     const skip = (page - 1) * limit;
@@ -33,7 +36,7 @@ export class DepartmentService {
     return { data: department, totalCount, totalPages, currentPage: page };
   }
 
-  async departmentCreate(body: DepartmentDto) {
+  async departmentCreate(body: DepartmentDto): Promise<Int_Department_Response> {
     const department = await this._departmentRepository.findOne({ where: { name: body.name } });
 
     if (department) throw new ConflictException(`El departamento ${body.name} ya existe.`);

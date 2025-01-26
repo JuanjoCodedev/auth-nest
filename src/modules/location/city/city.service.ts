@@ -9,6 +9,9 @@ import { CityEntity } from './city.entity';
 import { CityDto } from './city.dto';
 import { QueryDto } from 'src/shared/dto/query.dto';
 
+/* Interface */
+import { Int_City_Pagination_Response, Int_city_Response } from './city.interface';
+
 @Injectable()
 export class CityService {
   constructor(
@@ -16,7 +19,7 @@ export class CityService {
     private readonly _cityRepository: Repository<CityEntity>,
   ) { }
 
-  async getCity(query: QueryDto) {
+  async getCity(query: QueryDto): Promise<Int_City_Pagination_Response> {
     const { page, limit, order, name } = query;
 
     const skip = (page - 1) * limit;
@@ -33,7 +36,7 @@ export class CityService {
     return { data: city, totalCount, totalPages, currentPage: page };
   }
 
-  async cityCreate(body: CityDto) {
+  async cityCreate(body: CityDto): Promise<Int_city_Response> {
     const city = await this._cityRepository.findOne({ where: { name: body.name } });
 
     if (city) throw new ConflictException(`La ciudad ${body.name} ya se existe.`);

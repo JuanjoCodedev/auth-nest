@@ -10,6 +10,9 @@ import { PermissionsEntity } from '../permissions/permissions.entity';
 /* Dtos */
 import { RolPermissionsDto } from './rol_permissions.dto';
 
+/* Interface */
+import { Int_Rol_Permissions_Response } from './rol_permissions.interface';
+
 @Injectable()
 export class RolPermissionsService {
   constructor(
@@ -23,7 +26,7 @@ export class RolPermissionsService {
     private readonly permissionRepository: Repository<PermissionsEntity>,
   ) { }
 
-  async AssignRoleAndPermissions(body: RolPermissionsDto) {
+  async AssignRoleAndPermissions(body: RolPermissionsDto): Promise<Int_Rol_Permissions_Response> {
     const role = await this.rolRepository.findOne({ where: { id: body.id_rol } });
     if (!role) throw new NotFoundException(`Rol con ID ${body.id_rol} no encontrado.`);
 

@@ -7,6 +7,9 @@ import { ResetPasswordService } from './reset-password.service';
 /* Dtos */
 import { ResetPasswordDto } from './resetPassword.dto';
 
+/* Interface */
+import { Int_Reset_Pass_Response } from './reset-pass.interface';
+
 @ApiTags('Autenticación')
 @Controller('reset-password')
 export class ResetPasswordController {
@@ -17,7 +20,7 @@ export class ResetPasswordController {
   @ApiBody({ type: ResetPasswordDto })
   @ApiResponse({ status: 201, description: 'Correo de restablecimiento enviado.' })
   @ApiResponse({ status: 400, description: 'Datos de entrada inválidos.' })
-  async sendPasswordResetEmail(@Body() resetDto: ResetPasswordDto) {
+  async sendPasswordResetEmail(@Body() resetDto: ResetPasswordDto): Promise<Int_Reset_Pass_Response> {
     return await this.resetPasswordService.sendPasswordResetEmail(resetDto);
   }
 }

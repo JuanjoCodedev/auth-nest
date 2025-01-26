@@ -6,6 +6,10 @@ import { Repository } from 'typeorm';
 /* Entity */
 import { UserEntity } from 'src/modules/user/user.entity';
 
+/* Interface */
+import { Int_Auth_Response } from '../auth.interface';
+import { Int_Tokens_Response } from './tokens.interface';
+
 @Injectable()
 export class TokensService {
   constructor(
@@ -14,11 +18,11 @@ export class TokensService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async generateToken(payload: any, expiresIn: string, secret: string) {
+  async generateToken(payload: any, expiresIn: string, secret: string): Promise<string> {
     return this.jwtService.sign(payload, { expiresIn, secret });
   }
 
-  async generateAccessAndRefreshTokens(user: UserEntity) {
+  async generateAccessAndRefreshTokens(user: UserEntity): Promise<Int_Auth_Response> {
     const payload = { sub: user.id, email: user.email, roles: user.id_rol, purpose: 'sign in / sign up' };
     const token = await this.generateToken(payload, '5h', 'JWT_SECRET');
 
@@ -29,7 +33,7 @@ export class TokensService {
     return { uid: user.id, name: user.name, email: user.email, roles: user.id_rol, token, refreshToken };
   }
 
-  async refreshToken(refreshToken: string) {
+  async refreshToken(refreshToken: string): Promise<Int_Tokens_Response> {
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken);
       if (payload.purpose !== 'refresh') throw new UnauthorizedException('El refresh token proporcionado no es válido');
