@@ -31,7 +31,7 @@ export class SignUpService {
 
     const passHash = await this.authService.textHash(signUpDto.password, 12);
 
-    const newUser: UserEntity = this.userRepository.create({ ...signUpDto, password: passHash, ipAddress: ipAddress });
+    const newUser: UserEntity = this.userRepository.create({ ...signUpDto, password: passHash, ipAddress: ipAddress, provider: "manual", id_rol: { id: signUpDto.id_rol ?? 1 }, status: false });
     const savedAccount: UserEntity = await this.userRepository.save(newUser);
 
     return this.tokenService.generateAccessAndRefreshTokens(savedAccount);

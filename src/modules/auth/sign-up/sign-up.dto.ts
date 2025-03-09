@@ -1,4 +1,4 @@
-import { IsEmpty, IsInt, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsEmpty, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 import { SignInDto } from '../sign-in/sign-in.dto';
 
 export class SignUpDto extends SignInDto {
@@ -25,6 +25,10 @@ export class SignUpDto extends SignInDto {
   @IsNotEmpty({ message: 'Identificador de ciudad es obligatoria.' })
   @IsInt({ message: 'Identificador de ciudad debe ser un número entero.' })
   readonly id_city: number;
+
+  @IsOptional()
+  @IsInt({ message: 'Identificador del rol debe ser un número.' })
+  readonly id_rol: number;
 
   @IsOptional()
   readonly address: string;
