@@ -18,22 +18,28 @@ export class SignInService {
     private authService: AuthService,
     private tokenService: TokensService,
     private readonly mailerService: EMailerService,
-  ) { }
+  ) {}
 
-  async validateUser(useremail: string, userpassword: string, req?: Request): Promise<any> {
+  async validateUser(useremail: string, userpassword: string, ipAddress: string): Promise<any> {
     const user = await this.authService.findOneByEmail(useremail);
     if (!user) throw new UnauthorizedException('Email no fue encontrado');
 
     const isPasswordValid = await compare(userpassword, user.password);
     if (!isPasswordValid) throw new UnauthorizedException('Contraseña incorrecta.');
 
+    if (ipAddress !== user.ipAddress) {
+      await this.sendUnkanownIpEmail(user.email);
+      throw new UnauthorizedException('Dispositivo desconocido, revise su correo electrónico.');
+    }
+
     const { password: _, ...result } = user;
+
     console.debug({ context: 'AuthService', message: `Usuario ${useremail} validado` });
     return result;
   }
 
-  async signIn(signInDto: SignInDto, req: Request): Promise<Int_Auth_Response> {
-    const user = await this.validateUser(signInDto.email, signInDto.password, req);
+  async signIn(signInDto: SignInDto, ipAddress: string): Promise<Int_Auth_Response> {
+    const user = await this.validateUser(signInDto.email, signInDto.password, ipAddress);
     return this.tokenService.generateAccessAndRefreshTokens(user);
   }
 

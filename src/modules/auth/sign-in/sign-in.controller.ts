@@ -1,6 +1,7 @@
 import { Body, Controller, Post, Req } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
+import { Request } from 'express';
 
 /* Service */
 import { SignInService } from './sign-in.service';
@@ -11,7 +12,7 @@ import { SignInDto } from './sign-in.dto';
 @ApiTags('Autenticación')
 @Controller('sign-in')
 export class SignInController {
-  constructor(private readonly signInService: SignInService) { }
+  constructor(private readonly signInService: SignInService) {}
 
   @Throttle({ default: { limit: 50, ttl: 60000 } })
   @Post('signIn')
@@ -20,6 +21,6 @@ export class SignInController {
   @ApiResponse({ status: 201, description: 'Inicio de sesión exitoso.', type: Object })
   @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
   async signIn(@Body() signInDto: SignInDto, @Req() req: Request) {
-    return await this.signInService.signIn(signInDto, req);
+    return await this.signInService.signIn(signInDto, req.ip);
   }
 }
