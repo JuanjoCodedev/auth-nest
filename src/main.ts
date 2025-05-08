@@ -35,22 +35,14 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('LogiTech API')
-    .setDescription('API para el manejo logístico de bodegas, incluyendo operaciones de entrada y salida de inventario.')
+    .setTitle('AUTH NEST API')
+    .setDescription('API para la autenticación, asignacion de nivel de acceso y rutas de acceso del usuario.')
     .setVersion('1.0.0')
     .addServer('http://localhost:3000', 'Servidor de desarrollo')
-    .addServer('https://api.logitech.com', 'Servidor de producción')
+    .addServer('https://api.auth-nest.com', 'Servidor de producción')
     .addTag('Autenticación', 'Endpoints dedicados a la autenticación y autorización de usuarios.')
     .addTag('Usuarios', 'Endpoints relacionados con la gestión de usuarios y sus permisos.')
-    .addTag('Ubicacion', 'Endpoints relacionado con las Ciudad, País y Departamento.')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-      },
-      'access-token',
-    )
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

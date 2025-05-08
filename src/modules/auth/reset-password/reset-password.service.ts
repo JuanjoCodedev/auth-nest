@@ -47,6 +47,6 @@ export class ResetPasswordService {
       checkLink,
     );
 
-    return { message: `El código de recuperación de contraseña ha sido enviado a la dirección de correo electrónico: ${user.email}` };
+    return { message: `Correo de restablecimiento enviado.` };
   }
 }
