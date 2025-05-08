@@ -2,10 +2,10 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 /* Entity */
 import { UserEntity } from 'src/modules/user/user.entity';
-import { RolPermissionsEntity } from '../rol_permissions/rol_permissions.entity';
+import { AccessLevelRouteAccessEntity } from '../access-level_route-access/access-level_route-access.entity';
 
-@Entity('rol')
-export class RolesEntity {
+@Entity('accessLevel')
+export class AccessLevelEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -15,6 +15,6 @@ export class RolesEntity {
   @OneToMany(() => UserEntity, (user) => user.id_rol)
   users: UserEntity;
 
-  @OneToMany(() => RolPermissionsEntity, (rolPermission) => rolPermission.role)
-  rolPermissions: RolPermissionsEntity[];
+  @OneToMany(() => AccessLevelRouteAccessEntity, (accessLevelRouteAccess) => accessLevelRouteAccess.accessLevel)
+  accessLevelRouteAccess: AccessLevelRouteAccessEntity[];
 }

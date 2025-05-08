@@ -4,9 +4,9 @@ import { ConfigService } from '@nestjs/config';
 
 /* Entidades */
 import { UserEntity } from '../user/user.entity';
-import { RolesEntity } from '../auth/roles/roles.entity';
-import { PermissionsEntity } from '../auth/permissions/permissions.entity';
-import { RolPermissionsEntity } from '../auth/rol_permissions/rol_permissions.entity';
+import { AccessLevelEntity } from '../auth/access-level/access-level.entity';
+import { RouteAccessEntity } from '../auth/route-access/route-access.entity';
+import { AccessLevelRouteAccessEntity } from '../auth/access-level_route-access/access-level_route-access.entity';
 
 @Injectable()
 export class DatabaseService implements TypeOrmOptionsFactory {
@@ -27,7 +27,7 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       type: 'postgres',
       url: connectionUrl,
       synchronize: false,
-      entities: [UserEntity, RolesEntity, PermissionsEntity, RolPermissionsEntity],
+      entities: [UserEntity, AccessLevelEntity, RouteAccessEntity, AccessLevelRouteAccessEntity],
       logging: ['error', 'warn', 'info', 'query'],
     };
   }

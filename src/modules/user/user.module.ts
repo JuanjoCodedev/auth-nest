@@ -16,15 +16,15 @@ import { UserService } from './user.service';
 import { EMailerService } from '../mailer/mailer.service';
 import { AuthService } from '../auth/auth.service';
 import { TokensService } from '../auth/tokens/tokens.service';
-import { RolesService } from '../auth/roles/roles.service';
+import { AccessLevelService } from '../auth/access-level/access-level.service';
 
 /* Entity */
-import { RolesEntity } from '../auth/roles/roles.entity';
-import { RolPermissionsEntity } from '../auth/rol_permissions/rol_permissions.entity';
+import { AccessLevelEntity } from '../auth/access-level/access-level.entity';
+import { AccessLevelRouteAccessEntity } from '../auth/access-level_route-access/access-level_route-access.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, RolesEntity, RolPermissionsEntity]), EMailerModule, AuthModule],
+  imports: [TypeOrmModule.forFeature([UserEntity, AccessLevelEntity, AccessLevelRouteAccessEntity]), EMailerModule, AuthModule],
   controllers: [UserController],
-  providers: [UserService, AuthService, EMailerService, TokensService, RolesService],
+  providers: [UserService, AuthService, EMailerService, TokensService, AccessLevelService],
 })
 export class UserModule {}

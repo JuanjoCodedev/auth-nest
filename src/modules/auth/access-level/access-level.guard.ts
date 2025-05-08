@@ -1,14 +1,14 @@
 import { CanActivate, ExecutionContext, Injectable, ForbiddenException } from '@nestjs/common';
 
 /* Entity */
-import { PermissionsEntity } from 'src/modules/auth/permissions/permissions.entity';
+import { RouteAccessEntity } from 'src/modules/auth/route-access/route-access.entity';
 
 /* Service */
-import { RolesService } from 'src/modules/auth/roles/roles.service';
+import { AccessLevelService } from 'src/modules/auth/access-level/access-level.service';
 
 @Injectable()
-export class RolesGuard implements CanActivate {
-  constructor(private readonly rolesService: RolesService) {}
+export class AccessLevelGuard implements CanActivate {
+  constructor(private readonly rolesService: AccessLevelService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const { user } = context.switchToHttp().getRequest();
@@ -19,11 +19,11 @@ export class RolesGuard implements CanActivate {
     const userId = user.sub;
     console.log('Authenticated User:', user, userId);
 
-    const userRolesWithPermissions = await this.rolesService.getUserRolesWithPermissions(userId);
-    if (!userRolesWithPermissions || userRolesWithPermissions.length === 0) {
+    const userAccessLevelWithRouteAccess = await this.rolesService.getUserAccessLevelWithRouteAccess(userId);
+    if (!userAccessLevelWithRouteAccess || userAccessLevelWithRouteAccess.length === 0) {
       throw new ForbiddenException('El usuario no tiene roles asignados.');
     }
-    console.log('User  Roles with Permissions:', JSON.stringify(userRolesWithPermissions, null, 2));
+    console.log('User Access level with Route access:', JSON.stringify(userAccessLevelWithRouteAccess, null, 2));
 
     const request = context.switchToHttp().getRequest();
     const route = request.route.path;
@@ -31,7 +31,7 @@ export class RolesGuard implements CanActivate {
     console.log('Route:', route);
     console.log('Method:', method);
 
-    const hasAccess = userRolesWithPermissions.some((role) => role.rolPermissions.some((permissionEntity) => this.validatePermission(permissionEntity.permission, route)));
+    const hasAccess = userAccessLevelWithRouteAccess.some((accessLevel) => accessLevel.accessLevelRouteAccess.some((permissionEntity) => this.validateRouteAccess(permissionEntity.routeAccess, route)));
 
     console.log('Has Access:', hasAccess);
 
@@ -42,8 +42,8 @@ export class RolesGuard implements CanActivate {
     return true;
   }
 
-  private validatePermission(permission: PermissionsEntity, route: string): boolean {
-    const permissionRoute = permission.route;
+  private validateRouteAccess(routeAccess: RouteAccessEntity, route: string): boolean {
+    const permissionRoute = routeAccess.route;
 
     const normalizedRoute = this.normalizeRoute(route);
     const normalizedPermRoute = this.normalizeRoute(permissionRoute);

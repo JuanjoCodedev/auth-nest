@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 /* Entity */
-import { RolesEntity } from '../auth/roles/roles.entity';
+import { AccessLevelEntity } from '../auth/access-level/access-level.entity';
 
 @Entity('person')
 export class UserEntity {
@@ -26,9 +26,9 @@ export class UserEntity {
   @Column()
   address: string;
 
-  @ManyToOne(() => RolesEntity, (role) => role.users)
+  @ManyToOne(() => AccessLevelEntity, (role) => role.users)
   @JoinColumn({ name: 'id_rol' })
-  id_rol: RolesEntity;
+  id_rol: AccessLevelEntity;
 
   @Column()
   photoUrl: string;

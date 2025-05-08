@@ -1,10 +1,10 @@
-import { RolesEntity } from "./roles/roles.entity";
+import { AccessLevelEntity } from "./access-level/access-level.entity";
 
 export interface Int_Auth_Response {
     uid: number,
     name: string,
     email: string,
-    roles: RolesEntity,
+    roles: AccessLevelEntity,
     token: string,
     refreshToken: string,
 }
